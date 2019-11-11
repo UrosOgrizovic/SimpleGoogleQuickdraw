@@ -3,6 +3,8 @@ Soft Computing project, Software Engineering and Information Technologies, FTN, 
 
 Technologies used: Keras, Python
 
+# Fetching the data
+
 Create a folder called `data` in project root, download and place the following files into that folder:
 
 The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/The%20Mona%20Lisa.npy
