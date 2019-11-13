@@ -49,9 +49,5 @@ function clearCanvas() {
 }
 
 function submitDrawing() {
-    // here is the most important part because if you dont replace you will get a DOM 18 exception.
-    var image_base64 = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    $.post( "/saveimage", {
-        javascript_data: image_base64
-    });
+    toastr.info("TODO: implement submitDrawing function in index.js")
 }
