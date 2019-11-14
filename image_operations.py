@@ -7,6 +7,7 @@ import base64
 
 def load_images(file_path):
     img_array = np.load(file_path)
+    print(img_array[0].shape)
     return [np.reshape(image, (28, 28)) for image in img_array]
 
 def load_image(file_path):
