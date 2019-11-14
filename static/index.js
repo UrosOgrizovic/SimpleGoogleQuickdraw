@@ -1,5 +1,6 @@
 var canvas = document.getElementById("paintArea");
 var ctx = canvas.getContext("2d");
+//var BB = canvas.getBoundingClientRect();
 resize();
 
 // resize canvas when window is resized
@@ -23,8 +24,9 @@ var pos = { x: 0, y: 0 };
 
 // new position from mouse events
 function setPosition(e) {
-  pos.x = e.clientX - canvas.offsetLeft;
-  pos.y = e.clientY - canvas.offsetTop;
+    var BB=canvas.getBoundingClientRect();
+    pos.x = e.clientX - BB.left;
+    pos.y = e.clientY - BB.top;
 }
 
 function draw(e) {

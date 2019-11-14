@@ -1,5 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 import png
 from PIL import Image
 from io import BytesIO
@@ -8,6 +8,9 @@ import base64
 def load_images(file_path):
     img_array = np.load(file_path)
     return [np.reshape(image, (28, 28)) for image in img_array]
+
+def load_image(file_path):
+    return np.load(file_path)
 
 def get_image_from_images(images, index):
     return images[index]
