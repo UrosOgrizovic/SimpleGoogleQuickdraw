@@ -1,27 +1,29 @@
 from flask import Flask, escape, request, send_file, render_template
-import display_image
-import base64
+import image_operations
+import numpy as np
+
+
 
 app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    # images = display_image.load_images('data/full_numpy_bitmap_airplane.npy')
-    # img = display_image.get_image_from_images(images, 0)
-    # display_image.save_as_image(img)
     return render_template('index.html')
-    # return send_file('image.png')
 
 @app.route("/saveimage", methods=['POST'])
 def save_image():
     try:
         base64Img = request.form['javascript_data']
-        base64Img = base64Img.replace("data:image/octet-stream;base64,", "")
-        imgdata = base64.b64decode(base64Img)
-        with open('img.png', 'wb') as f:
-            f.write(imgdata)
+        imgdata = image_operations.decode_base64(base64Img)
+        img_array = image_operations.convert_base64_to_numpy_array(imgdata)
+
+        # image_operations.save_as_image('data/img.npy', img_array)
+        # image_operations.display_image(img_array)
+
+        print('ok')
         return 'ok'
     except:
+        print('fail')
         return 'fail'
 
 if __name__ == "__main__":
