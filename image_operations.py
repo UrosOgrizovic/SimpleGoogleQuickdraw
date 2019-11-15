@@ -4,16 +4,25 @@ from io import BytesIO
 import base64
 from matplotlib import pyplot as plt
 
-def load_images(file_path):
-    img_array = np.load(file_path)
-    print(img_array[0].shape)
-    return [np.reshape(image, (28, 28)) for image in img_array]
 
-def load_image(file_path):
-    return np.load(file_path)
+def load_images(file_path, how_many=-1):
+    """
+
+    :param file_path:
+    :param how_many: number of images to load from file (loads all images for -1)
+    :return: array of loaded 28x28 images
+
+    """
+
+    img_array = np.load(file_path)
+    if how_many == -1:
+        return [np.reshape(image, (28, 28)) for image in img_array]
+    else:
+        return [np.reshape(image, (28, 28)) for image in img_array[:how_many]]
 
 def get_image_from_images(images, index):
     return images[index]
+
 
 def display_image(img):
     fig = plt.figure()
@@ -24,15 +33,19 @@ def display_image(img):
     plt.imshow(img, cmap='gray')
     plt.show()
 
+
 def save_as_image(path, img_array):
     np.save(path, img_array)
 
+
 def decode_base64(base64_img):
-    base64Img = base64_img.split(',')[1]
-    return base64.b64decode(base64Img)
+    base_64_img = base64_img.split(',')[1]
+    return base64.b64decode(base_64_img)
+
 
 def convert_base64_to_numpy_array(decoded_base64):
     return np.array(Image.open(BytesIO(decoded_base64)))
+
 
 if __name__ == "__main__":
     load_images('data/full_numpy_bitmap_airplane.npy')

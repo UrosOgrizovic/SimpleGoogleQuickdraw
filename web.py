@@ -17,7 +17,10 @@ def save_image():
         img_array = image_operations.convert_base64_to_numpy_array(imgdata)
         # 3D -> 2D
         img_gray = img_array[:, :, 3]
-        # from (784,) to (1, 784), so that image_operations.load_images() can do the reshape
+        '''
+        1. resize to 28x28
+        2. flatten to 1, 784, so that image_operations.load_images() can do the reshape
+        '''
         img_gray = np.ravel(cv2.resize(img_gray, dsize=(28, 28), interpolation=cv2.INTER_CUBIC))[np.newaxis]
         image_operations.save_as_image('data/img.npy', img_gray)
 
@@ -26,7 +29,6 @@ def save_image():
         print('ok')
         return 'ok'
     except Exception as e:
-        image_operations.load_images('data/full_numpy_bitmap_axe.npy')
         print(e)
         print('fail')
         return 'fail'
