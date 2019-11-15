@@ -1,9 +1,8 @@
 import numpy as np
-from matplotlib import pyplot as plt
-import png
 from PIL import Image
 from io import BytesIO
 import base64
+from matplotlib import pyplot as plt
 
 def load_images(file_path):
     img_array = np.load(file_path)
@@ -17,6 +16,7 @@ def get_image_from_images(images, index):
     return images[index]
 
 def display_image(img):
+    fig = plt.figure()
     # plt.clf() clears the entire current figure
     plt.clf()
 

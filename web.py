@@ -1,8 +1,7 @@
 from flask import Flask, escape, request, send_file, render_template
-import image_operations
 import numpy as np
-from skimage import io, color
-
+import image_operations
+import cv2
 
 app = Flask(__name__)
 
@@ -16,18 +15,14 @@ def save_image():
         base64Img = request.form['javascript_data']
         imgdata = image_operations.decode_base64(base64Img)
         img_array = image_operations.convert_base64_to_numpy_array(imgdata)
-        # (400, 400, 4) -> (400, 400)
+        # 3D -> 2D
         img_gray = img_array[:, :, 3]
-        # (400, 400) -> 160000 TODO convert to 1D array
-        img_final = np.ravel(img_gray)
+        # from (784,) to (1, 784), so that image_operations.load_images() can do the reshape
+        img_gray = np.ravel(cv2.resize(img_gray, dsize=(28, 28), interpolation=cv2.INTER_CUBIC))[np.newaxis]
         image_operations.save_as_image('data/img.npy', img_gray)
 
-        # loaded_image = image_operations.load_images('data/img.npy')[0]
-        loaded_image = image_operations.load_image('data/img.npy')
-        print(loaded_image.shape)
-        # not working
-        image_operations.display_image(loaded_image.reshape(28, 28))
-        # image_operations.display_image(loaded_image)
+        loaded_image = image_operations.load_images('data/img.npy')[0]
+        image_operations.display_image(loaded_image)
         print('ok')
         return 'ok'
     except Exception as e:
