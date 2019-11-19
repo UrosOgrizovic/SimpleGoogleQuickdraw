@@ -53,7 +53,23 @@ function clearCanvas() {
 function submitDrawing() {
     // here is the most important part because if you dont replace you will get a DOM 18 exception.
     var image_base64 = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-    $.post( "/saveimage", {
-        javascript_data: image_base64
+//    $.post( "/saveimage", {
+//        javascript_data: image_base64,
+//        contentType: 'application/json',
+//        success: function(prediction) {
+//            console.log(prediction);
+//        }, error: function(err) {
+//            console.log(err);
+//        }
+//    });
+    $.ajax({
+        type: 'POST',
+        url: '/saveimage',
+        data: JSON.stringify(image_base64),
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+        success: function(prediction) {
+            alert(prediction);
+        }
     });
 }
