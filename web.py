@@ -3,7 +3,8 @@ import numpy as np
 import image_operations
 import cv2
 from models.vanilla_cnn import vanilla_cnn
-from keras.models import load_model
+from tensorflow.keras.models import load_model
+from tensorflow import cast, float32
 from flask import jsonify, json, make_response, Response
 import os
 
@@ -31,9 +32,11 @@ def save_image():
         image_operations.save_as_image('data/img.npy', img_gray)
 
         loaded_image = image_operations.load_images('data/img.npy')
+
         # image_operations.display_image(loaded_image)
-        prediction = make_prediction_for_image(loaded_image)
-        return app.response_class(response=json.dumps(prediction),
+        vanilla_cnn_prediction = make_prediction_for_image(loaded_image, 'models/vanilla_cnn/vanilla_cnn_model.h5')
+
+        return app.response_class(response=json.dumps(vanilla_cnn_prediction),
                                   status=200,
                                   mimetype='application/json')
         # print('ok')
@@ -45,13 +48,10 @@ def save_image():
                                   status=400,
                                   mimetype='application/json')
 
-def make_prediction_for_image(image):
-
-    model = load_model(os.path.join(dirname, 'models/vanilla_cnn/vanilla_cnn_model.h5'))
-
+def make_prediction_for_image(image, path_to_model):
+    model = load_model(os.path.join(dirname, path_to_model), compile=False)
     test_image = np.expand_dims(image, axis=-1)
     max_idx = np.argmax(model.predict(test_image))
-
     return vanilla_cnn.reverse_labels[max_idx]
 if __name__ == "__main__":
     app.run(debug=False, threaded=False)

@@ -96,11 +96,13 @@ def create_train_save_model(x_train, x_val, y_train, y_val):
 
 if __name__ == "__main__":
     x_train, x_val, y_train, y_val = get_data()
+    print(x_train)
+    quit()
     # augmentation helps avoid overfitting
 
     # model = load_model('vanilla_cnn_model.h5') gave 'no such file or directory' error, that's why this is used
     model = load_model(os.path.join(dirname, 'vanilla_cnn_model.h5'))
-
+    print(model.summary())
     # history = create_train_save_model(x_train, x_val, y_train, y_val)
     # get the details form the history object
     # train_acc = history.history['acc']
@@ -110,9 +112,9 @@ if __name__ == "__main__":
 
     # plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
 
-    test_image = image_operations.load_images('../data/img.npy')
-    # (28, 28) -> (1, 28, 28, 1)
-    test_image = np.expand_dims(test_image, axis=-1)
-    print(test_image.shape)
-    max_idx = np.argmax(model.predict(test_image))
-    print(reverse_labels[max_idx])
+    # test_image = image_operations.load_images('../data/img.npy')
+    # # (28, 28) -> (1, 28, 28, 1)
+    # test_image = np.expand_dims(test_image, axis=-1)
+    # print(test_image.shape)
+    # max_idx = np.argmax(model.predict(test_image))
+    # print(reverse_labels[max_idx])
