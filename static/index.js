@@ -65,7 +65,7 @@ function submitDrawing() {
                 to_display_probabilities += obj['probabilities'][prob];
             }
             /**
-            * @todo
+            * @todo Fix frontend display
             * @body display data on frontend in a nicer way
             */
             alert(obj['prediction'] + " " + obj['probabilities']);
