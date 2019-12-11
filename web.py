@@ -34,9 +34,10 @@ def save_image():
         loaded_image = image_operations.load_images('data/img.npy')
 
         # image_operations.display_image(loaded_image)
-        vanilla_cnn_prediction = make_prediction_for_image(loaded_image, 'models/vanilla_cnn/vanilla_cnn_model.h5')
-
-        return app.response_class(response=json.dumps(vanilla_cnn_prediction),
+        vanilla_cnn_prediction, probs = make_prediction_for_image(loaded_image,
+                                                                  'models/vanilla_cnn/vanilla_cnn_model_10k.h5')
+        to_return = {'prediction': vanilla_cnn_prediction, 'probabilities': probs}
+        return app.response_class(response=json.dumps(to_return),
                                   status=200,
                                   mimetype='application/json')
         # print('ok')
@@ -48,10 +49,13 @@ def save_image():
                                   status=400,
                                   mimetype='application/json')
 
+
 def make_prediction_for_image(image, path_to_model):
     model = load_model(os.path.join(dirname, path_to_model), compile=False)
     test_image = np.expand_dims(image, axis=-1)
     max_idx = np.argmax(model.predict(test_image))
-    return vanilla_cnn.reverse_labels[max_idx]
+    return vanilla_cnn.reverse_labels[max_idx], model.predict(test_image).tolist()
+
+
 if __name__ == "__main__":
     app.run(debug=False, threaded=False)

@@ -3,7 +3,9 @@ import numpy as np
 import image_operations
 import cv2
 file_path_prefix = '../../data/full_numpy_bitmap_'
-labels = {'airplane': np.uint8(0), 'alarm clock': np.uint8(1), 'axe': np.uint8(2), 'The Mona Lisa': np.uint8(3)}
+labels = {'airplane': np.uint8(0), 'alarm clock': np.uint8(1), 'axe': np.uint8(2), 'The Mona Lisa': np.uint8(3),
+          'bicycle': np.uint8(4), 'ant': np.uint8(5)}
+
 
 
 
@@ -18,4 +20,4 @@ def load_data(number_of_images_to_load_per_label):
     return X, Y
 
 if __name__ == "__main__":
-    pass
+    load_data(100)
