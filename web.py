@@ -43,18 +43,41 @@ def save_image():
         # print('ok')
         # return 'ok'
     except Exception as e:
+
         print(e)
         print('fail')
         return app.response_class(response=json.dumps('fail'),
-                                  status=400,
+                                  status=500,
                                   mimetype='application/json')
 
+@app.route("/getimage", methods=['GET'])
+def get_image():
+    try:
+        loaded_image = image_operations.load_images('data/img.npy')
+        loaded_image = np.squeeze(loaded_image)
+        image_operations.display_image(loaded_image)
+        return 'ok'
+    except Exception as e:
+        print(e)
+        print('fail')
+        return app.response_class(response=json.dumps('fail'),
+                                  status=500,
+                                  mimetype='application/json')
 
 def make_prediction_for_image(image, path_to_model):
     model = load_model(os.path.join(dirname, path_to_model), compile=False)
     test_image = np.expand_dims(image, axis=-1)
     max_idx = np.argmax(model.predict(test_image))
-    return vanilla_cnn.reverse_labels[max_idx], model.predict(test_image).tolist()
+    to_return_probs = {'airplane': 0, 'alarm clock': 0, 'axe': 0, 'The Mona Lisa': 0,
+          'bicycle': 0, 'ant': 0}
+    predicted_probs = model.predict(test_image).tolist()[0]
+    to_return_probs['airplane'] = predicted_probs[0]
+    to_return_probs['alarm clock'] = predicted_probs[1]
+    to_return_probs['axe'] = predicted_probs[2]
+    to_return_probs['The Mona Lisa'] = predicted_probs[3]
+    to_return_probs['bicycle'] = predicted_probs[4]
+    to_return_probs['ant'] = predicted_probs[5]
+    return vanilla_cnn.reverse_labels[max_idx], to_return_probs
 
 
 if __name__ == "__main__":

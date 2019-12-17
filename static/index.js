@@ -18,9 +18,12 @@ document.addEventListener("mousedown", setPosition);
 document.addEventListener("mouseenter", setPosition);
 document.getElementById("clearCanvas").addEventListener("click", clearCanvas);
 document.getElementById("submitDrawing").addEventListener("click", submitDrawing);
+document.getElementById("displayImg").addEventListener("click", displayImg);
 
 // last known position
 var pos = { x: 0, y: 0 };
+
+var classes = ['airplane', 'alarm clock', 'ant', 'axe', 'bicycle', 'The Mona Lisa'];
 
 // new position from mouse events
 function setPosition(e) {
@@ -45,12 +48,21 @@ function draw(e) {
   ctx.stroke(); // draw it!
 }
 
+function resetTable() {
+    for (var cl of classes) {
+        document.getElementById(cl).innerHTML = 0;
+        document.getElementById(cl).style.backgroundColor = 'white';
+    }
+}
+
 function clearCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
+    resetTable();
 }
 
 function submitDrawing() {
+    resetTable();
     // here is the most important part because if you dont replace you will get a DOM 18 exception.
     var image_base64 = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
     $.ajax({
@@ -60,15 +72,24 @@ function submitDrawing() {
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function(obj) {
-            var to_display_probabilities = "";
-            for (var prob in obj['probabilities']) {
-                to_display_probabilities += obj['probabilities'][prob];
+            max_class = ""
+            max_prob = 0
+            for (var className in obj.probabilities) {
+                if (obj.probabilities[className] >= max_prob) {
+                    max_class = className;
+                    max_prob = obj.probabilities[className];
+                }
+                document.getElementById(className).innerHTML = obj.probabilities[className];
             }
-            /**
-            * @todo Fix frontend display
-            * @body display data on frontend in a nicer way
-            */
-            alert(obj['prediction'] + " " + obj['probabilities']);
+            document.getElementById(max_class).style.backgroundColor = 'yellow';
         }
+    });
+}
+
+function displayImg() {
+    $.ajax({
+        type: 'GET',
+        url: '/getimage',
+        contentType: 'application/json;charset=UTF-8'
     });
 }

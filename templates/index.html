@@ -16,14 +16,40 @@
         <li>Bicycle</li>
         <li>The Mona Lisa</li>
     </ul>
-
     <div style="text-align: center;">
-        <canvas id="paintArea" style="border: 1px solid black;" width="280" height="280"></canvas>
-        <button type="button" id="submitDrawing">Submit drawing</button>
-        <button type="button" id="clearCanvas">Clear canvas</button>
+        <div>
+            <canvas id="paintArea" style="border: 1px solid black;" width="280" height="280"></canvas>
+        </div>
+        <div>
+            <button type="button" id="submitDrawing">Submit drawing</button>
+            <button type="button" id="clearCanvas">Clear canvas</button>
+        </div>
+        <table id="probTable" border="1" align="center" style="margin-top: 20px; margin-bottom: 20px;">
+            <caption style="margin-bottom: 10px;">Probabilities per class</caption>
+            <thead>
+            <tr>
+                <th>Airplane</th>
+                <th>Alarm clock</th>
+                <th>Ant</th>
+                <th>Axe</th>
+                <th>Bicycle</th>
+                <th>The Mona Lisa</th>
+            </tr>
+            </thead>
+            <tr>
+                <td id="airplane" >0</td>
+                <td id="alarm clock">0</td>
+                <td id="ant">0</td>
+                <td id="axe">0</td>
+                <td id="bicycle">0</td>
+                <td id="The Mona Lisa">0</td>
+            </tr>
+        </table>
+        <!-- so as to see how much resizing affects the original -->
+        <button type="button" id="displayImg">View downsized (28x28) drawing</button>
     </div>
 </body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename = 'index.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"> </script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'index.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"> </script>
 </html>
