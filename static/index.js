@@ -49,16 +49,49 @@ function draw(e) {
 }
 
 function resetTable() {
-    for (var cl of classes) {
-        document.getElementById(cl).innerHTML = 0;
-        document.getElementById(cl).style.backgroundColor = 'white';
-    }
+    $('#probTable tbody').empty();
+//    for (var cl of classes) {
+//
+//        document.getElementById(cl).innerHTML = 0;
+//        document.getElementById(cl).style.backgroundColor = 'white';
+//    }
 }
 
 function clearCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
     resetTable();
+}
+
+function displayVanillaCNNPredictions(tbody, prediction, probs, model_name) {
+    var newRow = tbody.insertRow(tbody.rows.length);
+
+    var to_append = "<tr><td>"+model_name+"</td>";
+    for (var img_class of classes) {
+        if (prediction == img_class) {
+            to_append += "<td style='background-color: yellow;'>"+probs[img_class]+"</td>";
+        } else {
+            to_append += "<td>"+probs[img_class]+"</td>";
+        }
+
+    }
+    to_append += "</tr>";
+    newRow.innerHTML = to_append;
+}
+
+function displaySVMPredictions(tbody, prediction, model_name) {
+    var newRow = tbody.insertRow(tbody.rows.length);
+    var to_append = "<tr><td>"+model_name+"</td>";
+    for (var img_class of classes) {
+        if (prediction == img_class) {
+            to_append += "<td style='background-color: yellow;'>1</td>";
+        } else {
+            to_append += "<td>0</td>";
+        }
+
+    }
+    to_append += "</tr>";
+    newRow.innerHTML = to_append;
 }
 
 function submitDrawing() {
@@ -72,16 +105,12 @@ function submitDrawing() {
         dataType: 'json',
         contentType: 'application/json;charset=UTF-8',
         success: function(obj) {
-            max_class = ""
-            max_prob = 0
-            for (var className in obj.probabilities) {
-                if (obj.probabilities[className] >= max_prob) {
-                    max_class = className;
-                    max_prob = obj.probabilities[className];
-                }
-                document.getElementById(className).innerHTML = obj.probabilities[className];
-            }
-            document.getElementById(max_class).style.backgroundColor = 'yellow';
+            max_class = "";
+            max_prob = 0;
+            var tbody = document.getElementById('probTable').getElementsByTagName('tbody')[0];
+            displayVanillaCNNPredictions(tbody, obj.prediction, obj.probabilities, 'Vanilla CNN 10k');
+            displayVanillaCNNPredictions(tbody, obj.vanilla_cnn_100k_prediction, obj.vanilla_cnn_100k_probabilities, 'Vanilla CNN 100k');
+            displaySVMPredictions(tbody, obj.SVM2k_prediction, 'SVM 2k');
         }
     });
 }

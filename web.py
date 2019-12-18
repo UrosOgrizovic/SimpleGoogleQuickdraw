@@ -7,6 +7,7 @@ from tensorflow.keras.models import load_model
 from tensorflow import cast, float32
 from flask import jsonify, json, make_response, Response
 import os
+from models.SVM import SVM
 
 dirname = os.path.dirname(__file__)
 app = Flask(__name__)
@@ -34,9 +35,14 @@ def save_image():
         loaded_image = image_operations.load_images('data/img.npy')
 
         # image_operations.display_image(loaded_image)
-        vanilla_cnn_prediction, probs = make_prediction_for_image(loaded_image,
-                                                                  'models/vanilla_cnn/vanilla_cnn_model_10k.h5')
-        to_return = {'prediction': vanilla_cnn_prediction, 'probabilities': probs}
+        vanilla_cnn_10k_prediction, vanilla_cnn_10k_probs = vanilla_cnn.make_prediction_for_image(loaded_image,
+                                                                  'vanilla_cnn_model_10k.h5')
+        vanilla_cnn_100k_prediction, vanilla_cnn_100k_probs = vanilla_cnn.make_prediction_for_image(loaded_image,
+                                                                                      'vanilla_cnn_model_100k.h5')
+        svm2k_prediction = SVM.make_prediction_for_image(loaded_image, 'SVM_2k.joblib')
+        to_return = {'prediction': vanilla_cnn_10k_prediction, 'probabilities': vanilla_cnn_10k_probs,
+                     'vanilla_cnn_100k_prediction': vanilla_cnn_100k_prediction, 'vanilla_cnn_100k_probabilities': vanilla_cnn_100k_probs,
+                     'SVM2k_prediction': svm2k_prediction}
         return app.response_class(response=json.dumps(to_return),
                                   status=200,
                                   mimetype='application/json')
@@ -64,20 +70,7 @@ def get_image():
                                   status=500,
                                   mimetype='application/json')
 
-def make_prediction_for_image(image, path_to_model):
-    model = load_model(os.path.join(dirname, path_to_model), compile=False)
-    test_image = np.expand_dims(image, axis=-1)
-    max_idx = np.argmax(model.predict(test_image))
-    to_return_probs = {'airplane': 0, 'alarm clock': 0, 'axe': 0, 'The Mona Lisa': 0,
-          'bicycle': 0, 'ant': 0}
-    predicted_probs = model.predict(test_image).tolist()[0]
-    to_return_probs['airplane'] = predicted_probs[0]
-    to_return_probs['alarm clock'] = predicted_probs[1]
-    to_return_probs['axe'] = predicted_probs[2]
-    to_return_probs['The Mona Lisa'] = predicted_probs[3]
-    to_return_probs['bicycle'] = predicted_probs[4]
-    to_return_probs['ant'] = predicted_probs[5]
-    return vanilla_cnn.reverse_labels[max_idx], to_return_probs
+
 
 
 if __name__ == "__main__":
