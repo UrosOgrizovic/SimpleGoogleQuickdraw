@@ -1,19 +1,16 @@
 import numpy as np
-import pandas as pd
 import keras
-from keras.models import Sequential
+from keras.models import Sequential, load_model
 from keras.layers import Dense, Dropout, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from keras.preprocessing.image import ImageDataGenerator
-from sklearn.model_selection import train_test_split
-import matplotlib.pyplot as plt
 import image_operations
 import os
 from keras.models import load_model
 from models import data_operations
 from keras.callbacks.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from keras.regularizers import l2
-from keras.constraints import max_norm # trying weight contraints
+from keras.constraints import max_norm  # trying weight contraints
 
 dirname = os.path.dirname(__file__)
 
@@ -23,46 +20,6 @@ reverse_labels = {0: 'airplane', 1: 'alarm clock', 2: 'axe', 3: 'The Mona Lisa',
 img_rows, img_cols = 28, 28
 batch_size = 32
 number_of_images_per_label = 10000
-
-def get_data(number_of_images_to_load_per_label):
-    x, y = data_operations.load_data(number_of_images_to_load_per_label)
-    x = np.array(x)
-    # (?, 28, 28) -> (?, 28, 28, 1)
-    x = np.expand_dims(x, axis=-1)
-
-    y = np.array(y)
-
-    y = keras.utils.to_categorical(y, num_classes=len(labels.keys()), dtype='uint8')
-
-    x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.20, random_state=2)
-    return x_train, x_val, y_train, y_val
-
-
-def plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss):
-    """
-    plots training and validation curves
-    :param train_acc:
-    :param val_acc:
-    :param train_loss:
-    :param val_loss:
-    :return:
-    """
-    epochs = range(1, len(train_acc) + 1)
-
-    # Train and validation accuracy
-    plt.plot(epochs, train_acc, 'b', label='Training accurarcy')
-    plt.plot(epochs, val_acc, 'r', label='Validation accurarcy')
-    plt.title('Training and Validation accurarcy')
-    plt.legend()
-
-    plt.figure()
-    # Train and validation loss
-    plt.plot(epochs, train_loss, 'b', label='Training loss')
-    plt.plot(epochs, val_loss, 'r', label='Validation loss')
-    plt.title('Training and Validation loss')
-    plt.legend()
-
-    plt.show()
 
 
 def create_train_save_model(x_train, x_val, y_train, y_val):
@@ -119,24 +76,42 @@ def create_train_save_model(x_train, x_val, y_train, y_val):
     # model.save('vanilla_cnn_model.h5') # not using this because of mcp_save
     return history
 
+
+def make_prediction_for_image(image, model_name):
+    model = load_model(os.path.join(dirname, model_name), compile=False)
+    test_image = np.expand_dims(image, axis=-1)
+    max_idx = np.argmax(model.predict(test_image))
+    to_return_probs = {'airplane': 0, 'alarm clock': 0, 'axe': 0, 'The Mona Lisa': 0,
+          'bicycle': 0, 'ant': 0}
+    predicted_probs = model.predict(test_image).tolist()[0]
+    to_return_probs['airplane'] = predicted_probs[0]
+    to_return_probs['alarm clock'] = predicted_probs[1]
+    to_return_probs['axe'] = predicted_probs[2]
+    to_return_probs['The Mona Lisa'] = predicted_probs[3]
+    to_return_probs['bicycle'] = predicted_probs[4]
+    to_return_probs['ant'] = predicted_probs[5]
+    return reverse_labels[max_idx], to_return_probs
+
+
 if __name__ == "__main__":
-    x_train, x_val, y_train, y_val = get_data(number_of_images_per_label)
+    x, y = data_operations.load_data(number_of_images_per_label)
+    x_train, x_val, y_train, y_val = data_operations.create_train_and_validation_sets(x, y)
     # print(x_train)
 
 
     # model = load_model(os.path.join(dirname, 'vanilla_cnn_model.h5'))
     # print(model.summary())
 
-    history = create_train_save_model(x_train, x_val, y_train, y_val)
+    # history = create_train_save_model(x_train, x_val, y_train, y_val)
     # get the details form the history object
-    train_acc = history.history['acc']
-    val_acc = history.history['val_acc']
-    train_loss = history.history['loss']
-    val_loss = history.history['val_loss']
+    # train_acc = history.history['acc']
+    # val_acc = history.history['val_acc']
+    # train_loss = history.history['loss']
+    # val_loss = history.history['val_loss']
 
-    # plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
+    # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
 
-    test_image = image_operations.load_images(os.path.join(dirname, '../../data/img.npy'))
+    # test_image = image_operations.load_images(os.path.join(dirname, '../../data/img.npy'))
 
     # image_operations.display_image(np.squeeze(test_image))
     # (28, 28) -> (1, 28, 28, 1)
