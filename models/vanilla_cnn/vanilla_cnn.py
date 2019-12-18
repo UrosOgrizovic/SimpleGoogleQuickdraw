@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import image_operations
 import os
 from keras.models import load_model
-from models.vanilla_cnn import data_operations
+from models import data_operations
 from keras.callbacks.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from keras.regularizers import l2
 from keras.constraints import max_norm # trying weight contraints
