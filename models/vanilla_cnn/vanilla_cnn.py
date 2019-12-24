@@ -11,15 +11,13 @@ from models import data_operations
 from keras.callbacks.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from keras.regularizers import l2
 from keras.constraints import max_norm  # trying weight contraints
-
+from constants import labels, reverse_labels
 dirname = os.path.dirname(__file__)
 
-labels = {'airplane': np.uint8(0), 'alarm clock': np.uint8(1), 'axe': np.uint8(2), 'The Mona Lisa': np.uint8(3),
-          'bicycle': np.uint8(4), 'ant': np.uint8(5)}
-reverse_labels = {0: 'airplane', 1: 'alarm clock', 2: 'axe', 3: 'The Mona Lisa', 4: 'bicycle', 5: 'ant'}
+
 img_rows, img_cols = 28, 28
 batch_size = 32
-number_of_images_per_label = 10000
+number_of_images_per_label = 100
 
 
 def create_train_save_model(x_train, x_val, y_train, y_val):
@@ -96,8 +94,7 @@ def make_prediction_for_image(image, model_name):
 if __name__ == "__main__":
     x, y = data_operations.load_data(number_of_images_per_label)
     x_train, x_val, y_train, y_val = data_operations.create_train_and_validation_sets(x, y)
-    # print(x_train)
-
+    # print(x_train.shape)
 
     # model = load_model(os.path.join(dirname, 'vanilla_cnn_model.h5'))
     # print(model.summary())

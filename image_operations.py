@@ -5,20 +5,34 @@ import base64
 from matplotlib import pyplot as plt
 
 
-def load_images(file_path, how_many=-1):
+def load_images(file_path, how_many=-1, is_transfer_learning=False):
     """
 
     :param file_path:
     :param how_many: number of images to load from file (loads all images for -1)
+    :param is_transfer_learning: if true, images are padded before returning
     :return: array of loaded 28x28 images
-
     """
 
     img_array = np.load(file_path)
-    if how_many == -1:
-        return [np.reshape(image, (28, 28)) for image in img_array]
-    else:
-        return [np.reshape(image, (28, 28)) for image in img_array[:how_many]]
+    if how_many != -1:
+        img_array = img_array[:how_many]
+    if is_transfer_learning:
+        return [pad_image(image) for image in img_array]
+    return [np.reshape(image, (28, 28)) for image in img_array]
+
+
+def pad_image(img):
+    """
+    no transfer learning models that are available out-of-the-box in keras accept images with
+    a resolution smaller than 32x32, hence the padding
+    :param img:
+    :return:
+    """
+    img = np.reshape(img, (28, 28))
+    img = np.pad(img, 2)
+    return img
+
 
 def get_image_from_images(images, index):
     return images[index]

@@ -1,17 +1,12 @@
 from sklearn import svm
 from models import data_operations
-import image_operations
 import os
 import numpy as np
-
-import image_operations
-from keras.models import model_from_json
 # using joblib instead of pickle because it's more efficient on objects that carry large numpy arrays
 from joblib import dump, load
+from constants import labels, reverse_labels
 dirname = os.path.dirname(__file__)
-labels = {'airplane': np.uint8(0), 'alarm clock': np.uint8(1), 'axe': np.uint8(2), 'The Mona Lisa': np.uint8(3),
-          'bicycle': np.uint8(4), 'ant': np.uint8(5)}
-reverse_labels = {0: 'airplane', 1: 'alarm clock', 2: 'axe', 3: 'The Mona Lisa', 4: 'bicycle', 5: 'ant'}
+
 
 def make_prediction_for_image(image, model_name):
     image = np.array(image)
