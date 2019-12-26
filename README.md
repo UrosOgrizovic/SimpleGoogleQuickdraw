@@ -1,7 +1,7 @@
 # SimpleGoogleQuickdraw
 Soft Computing project, Software Engineering and Information Technologies, FTN, 2019
 
-Technologies used: Keras, Python
+Technologies used: Keras 2.3.1, Python 3.6.1
 
 # Fetching the data
 
