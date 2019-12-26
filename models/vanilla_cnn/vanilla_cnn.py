@@ -17,7 +17,7 @@ dirname = os.path.dirname(__file__)
 
 img_rows, img_cols = 28, 28
 batch_size = 32
-number_of_images_per_label = 100
+number_of_images_per_label = 10000
 
 
 def create_train_save_model(x_train, x_val, y_train, y_val):
@@ -71,7 +71,7 @@ def create_train_save_model(x_train, x_val, y_train, y_val):
                                   callbacks=[early_stopping, mcp_save, reduce_lr_loss],
                                   verbose=2)
 
-    # model.save('vanilla_cnn_model.h5') # not using this because of mcp_save
+    # model.save(file_to_save_to) # not using this because of mcp_save
     return history
 
 
@@ -96,15 +96,15 @@ if __name__ == "__main__":
     x_train, x_val, y_train, y_val = data_operations.create_train_and_validation_sets(x, y)
     # print(x_train.shape)
 
-    # model = load_model(os.path.join(dirname, 'vanilla_cnn_model.h5'))
+    # model = load_model(os.path.join(dirname, 'vanilla_cnn_model_10k.h5'))
     # print(model.summary())
 
-    # history = create_train_save_model(x_train, x_val, y_train, y_val)
+    history = create_train_save_model(x_train, x_val, y_train, y_val)
     # get the details form the history object
-    # train_acc = history.history['acc']
-    # val_acc = history.history['val_acc']
-    # train_loss = history.history['loss']
-    # val_loss = history.history['val_loss']
+    train_acc = history.history['acc']
+    val_acc = history.history['val_acc']
+    train_loss = history.history['loss']
+    val_loss = history.history['val_loss']
 
     # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
 
