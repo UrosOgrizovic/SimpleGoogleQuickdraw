@@ -21,8 +21,8 @@ The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bit
 
 # Models
 
-**Vanilla CNN** - 13 layers, excluding the input layer. Trained on both 10.000 images per label and 100.000 images per label. The latter case brought no noticeable improvement.
+**Vanilla CNN** - 13 layers, excluding the input layer. Trained on both 10.000 images per label and 100.000 images per label. The latter case brought no noticeable improvement. [View architecture visualization](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/vanilla_cnn/vanilla_cnn_model%20architecture.svg)
 
 **SVM** - Training was very slow; [from docs](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) *"The fit time scales at least quadratically with the number of samples and may be impractical beyond tens of thousands of samples."* Doesn't work well on this problem.
 
-[**VGG19**](https://github.com/keras-team/keras-applications/blob/master/keras_applications/vgg19.py) - 24 layers, excluding the input layer. However, instead of using VGG19's fully connected layers, I used my own, because my problem doesn't have 1000 classes.
+[**VGG19**](https://github.com/keras-team/keras-applications/blob/master/keras_applications/vgg19.py) - 24 layers, excluding the input layer. However, instead of using VGG19's fully connected layers, I used my own, because my problem doesn't have 1000 classes. [View architecture visualization](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/transfer_learning/VGG19%20architecture.svg)
