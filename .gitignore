@@ -111,3 +111,6 @@ data/
 *.png
 *.jpg
 *.jpeg
+
+# models (can't be bothered)
+VGG19_10k.h5

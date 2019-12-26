@@ -8,6 +8,7 @@ from tensorflow import cast, float32
 from flask import jsonify, json, make_response, Response
 import os
 from models.SVM import SVM
+from models.transfer_learning import transfer_learning
 
 dirname = os.path.dirname(__file__)
 app = Flask(__name__)
@@ -40,9 +41,14 @@ def save_image():
         vanilla_cnn_100k_prediction, vanilla_cnn_100k_probs = vanilla_cnn.make_prediction_for_image(loaded_image,
                                                                                       'vanilla_cnn_model_100k.h5')
         svm2k_prediction = SVM.make_prediction_for_image(loaded_image, 'SVM_2k.joblib')
+        vgg19_10k_prediction, vgg19_10k_probs = transfer_learning.make_prediction_for_image(loaded_image,
+                                                                                            'VGG19_10k.h5')
+
         to_return = {'prediction': vanilla_cnn_10k_prediction, 'probabilities': vanilla_cnn_10k_probs,
-                     'vanilla_cnn_100k_prediction': vanilla_cnn_100k_prediction, 'vanilla_cnn_100k_probabilities': vanilla_cnn_100k_probs,
-                     'SVM2k_prediction': svm2k_prediction}
+                     'vanilla_cnn_100k_prediction': vanilla_cnn_100k_prediction,
+                     'vanilla_cnn_100k_probabilities': vanilla_cnn_100k_probs,
+                     'SVM2k_prediction': svm2k_prediction, 'VGG19_10k_prediction': vgg19_10k_prediction,
+                     'VGG19_10k_probabilities': vgg19_10k_probs}
         return app.response_class(response=json.dumps(to_return),
                                   status=200,
                                   mimetype='application/json')

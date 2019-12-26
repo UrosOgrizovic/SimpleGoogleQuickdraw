@@ -94,6 +94,33 @@ function displaySVMPredictions(tbody, prediction, model_name) {
     newRow.innerHTML = to_append;
 }
 
+function displayPredictions(tbody, prediction, probs, model_name) {
+    var newRow = tbody.insertRow(tbody.rows.length);
+    var to_append = "<tr><td>"+model_name+"</td>";
+
+    // if probs isn't {}
+    if (!(Object.keys(probs).length === 0 && probs.constructor === Object)) {
+        for (var img_class of classes) {
+            if (prediction == img_class) {
+                to_append += "<td style='background-color: yellow;'>"+probs[img_class]+"</td>";
+            } else {
+                to_append += "<td>"+probs[img_class]+"</td>";
+            }
+        }
+    }
+    else {
+        for (var img_class of classes) {
+            if (prediction == img_class) {
+                to_append += "<td style='background-color: yellow;'>1</td>";
+            } else {
+                to_append += "<td>0</td>";
+            }
+        }
+    }
+    to_append += "</tr>";
+    newRow.innerHTML = to_append;
+}
+
 function submitDrawing() {
     resetTable();
     // here is the most important part because if you dont replace you will get a DOM 18 exception.
@@ -108,9 +135,11 @@ function submitDrawing() {
             max_class = "";
             max_prob = 0;
             var tbody = document.getElementById('probTable').getElementsByTagName('tbody')[0];
-            displayVanillaCNNPredictions(tbody, obj.prediction, obj.probabilities, 'Vanilla CNN 10k');
-            displayVanillaCNNPredictions(tbody, obj.vanilla_cnn_100k_prediction, obj.vanilla_cnn_100k_probabilities, 'Vanilla CNN 100k');
-            displaySVMPredictions(tbody, obj.SVM2k_prediction, 'SVM 2k');
+
+            displayPredictions(tbody, obj.prediction, obj.probabilities, 'Vanilla CNN 10k');
+            displayPredictions(tbody, obj.vanilla_cnn_100k_prediction, obj.vanilla_cnn_100k_probabilities, 'Vanilla CNN 100k');
+            displayPredictions(tbody, obj.SVM2k_prediction, {}, 'SVM 2k');
+            displayPredictions(tbody, obj.VGG19_10k_prediction, obj.VGG19_10k_probabilities, 'VGG19_10k');
         }
     });
 }
