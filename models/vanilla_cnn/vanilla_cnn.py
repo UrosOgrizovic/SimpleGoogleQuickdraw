@@ -106,7 +106,7 @@ if __name__ == "__main__":
     train_loss = history.history['loss']
     val_loss = history.history['val_loss']
 
-    # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
+    data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
 
     # test_image = image_operations.load_images(os.path.join(dirname, '../../data/img.npy'))
 

@@ -38,17 +38,22 @@ def plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss):
     # Train and validation accuracy
     plt.plot(epochs, train_acc, 'b', label='Training accurarcy')
     plt.plot(epochs, val_acc, 'r', label='Validation accurarcy')
+    plt.xlabel('Epochs')
     plt.title('Training and Validation accurarcy')
     plt.legend()
+    plt.savefig('vanilla_cnn_10k_train_val_acc', bbox_inches='tight')
 
     plt.figure()
     # Train and validation loss
     plt.plot(epochs, train_loss, 'b', label='Training loss')
     plt.plot(epochs, val_loss, 'r', label='Validation loss')
+    plt.xlabel('Epochs')
     plt.title('Training and Validation loss')
     plt.legend()
+    plt.savefig('vanilla_cnn_10k_train_val_loss', bbox_inches='tight')
 
     plt.show()
+
 
 
 def create_train_and_validation_sets(x, y, is_transfer_learning=False):
