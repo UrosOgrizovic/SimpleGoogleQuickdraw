@@ -23,6 +23,30 @@ The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bit
 
 **Vanilla CNN** - 13 layers, excluding the input layer. Trained on both 10.000 images per label and 100.000 images per label. The latter case brought no noticeable improvement. [View architecture visualization](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/vanilla_cnn/vanilla_cnn_model%20architecture.svg)
 
+[Callbacks](https://keras.io/callbacks/) used:
+
+- [ImageDataGenerator](https://github.com/keras-team/keras/blob/master/keras/preprocessing/image.py#L238) was used for augmenting the images, which helps avoid overfitting.
+
+- [EarlyStopping](https://github.com/keras-team/keras/blob/master/keras/callbacks/callbacks.py#L733) was especially useful for the 100k-images-per-label-model, as it greatly reduced the number of epochs that the model would execute before stopping. It was set up in such a way that if the validation loss was noticed to have stopped decreasing after five epochs, the training would terminate.
+
+- [ModelCheckpoint](https://github.com/keras-team/keras/blob/master/keras/callbacks/callbacks.py#L633) was used with the `save_best_only` flag set to `True`, so as to only save the latest best model (i.e. the best model out of all the epochs) according to the validation loss.
+
+- [ReduceLROnPlateau](https://github.com/keras-team/keras/blob/master/keras/callbacks/callbacks.py#L946) was used because models often benefit from reducing the learning rate by a factor of 2-10 once learning stagnates. Yet again, the monitored value was the validation loss.
+
+[Constraints](https://keras.io/constraints/) used:
+
+- [MaxNorm](https://github.com/keras-team/keras/blob/master/keras/constraints.py#L22) is a weight constraint.
+
+Plots:
+
+- [10k per label train/val accuracy](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/vanilla_cnn/vanilla_cnn_10k_train_val_acc.png)
+
+- [10k per label train/val loss](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/vanilla_cnn/vanilla_cnn_10k_train_val_loss.png)
+
+- [100k per label train/val accuracy](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/vanilla_cnn/vanilla_cnn_100k_train_val_acc.png)
+
+- [100k per label train/val loss](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/vanilla_cnn/vanilla_cnn_100k_train_val_loss.png)
+
 **SVM** - Training was very slow; [from docs](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) *"The fit time scales at least quadratically with the number of samples and may be impractical beyond tens of thousands of samples."* Doesn't work well on this problem.
 
 [**VGG19**](https://github.com/keras-team/keras-applications/blob/master/keras_applications/vgg19.py) - 24 layers, excluding the input layer. However, instead of using VGG19's fully connected layers, I used my own, because my problem doesn't have 1000 classes. [View architecture visualization](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/transfer_learning/VGG19%20architecture.svg)
