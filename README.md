@@ -35,7 +35,8 @@ The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bit
 
 [Constraints](https://keras.io/constraints/) used:
 
-- [MaxNorm](https://github.com/keras-team/keras/blob/master/keras/constraints.py#L22) is a [weight constraint](https://arxiv.org/pdf/1602.07868.pdf)<sup>1</sup>. 
+- [MaxNorm](https://github.com/keras-team/keras/blob/master/keras/constraints.py#L22) is a type of [weight constraint](https://arxiv.org/pdf/1602.07868.pdf)<sup>1</sup>. From [Dropout: A Simple Way to Prevent Neural Networks from
+Overfitting](http://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf): *One particular form of regularization was found to be especially useful for dropout—constraining the norm of the incoming weight vector at each hidden unit to be upper bounded by a fixed constant c.*
 
 <sup>1</sup>For CNNs, weight normalization is computationally cheaper than batch normalization, because the number of inputs tends to be larger than the number of weights. For example, for the Vanilla CNN from this project, the number of weights is ~1.5 million, whereas there are 10k 32x32 images, which amounts to an input size of ~10 million, or, in the case of there being 100k 32x32 images, an input size of ~100 million. Furthermore, convolutions use the same filter in multiple locations (in the sense that the filter slides over the input data for that layer), which means that going through all the weights is much faster than going through all the images.
 
@@ -51,4 +52,4 @@ Plots:
 
 **SVM** - Training was very slow; [from docs](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) *"The fit time scales at least quadratically with the number of samples and may be impractical beyond tens of thousands of samples."* Doesn't work well on this problem.
 
-[**VGG19**](https://github.com/keras-team/keras-applications/blob/master/keras_applications/vgg19.py) - 24 layers, excluding the input layer. However, instead of using VGG19's fully connected layers, I used my own, because my problem doesn't have 1000 classes. [View architecture visualization](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/transfer_learning/VGG19%20architecture.svg)
+[**VGG19**](https://github.com/keras-team/keras-applications/blob/master/keras_applications/vgg19.py) - 24 layers, excluding the input layer. However, instead of using VGG19's fully connected layers, I used my own, because my problem doesn't have 1000 classes. Additionally, I had to pad Google's 28x28 images to 32x32 images, because this model doesn't accept images smaller than 32x32. [View architecture visualization](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/transfer_learning/VGG19%20architecture.svg)
