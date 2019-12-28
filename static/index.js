@@ -139,6 +139,7 @@ function submitDrawing() {
             displayPredictions(tbody, obj.prediction, obj.probabilities, 'Vanilla CNN 10k');
             displayPredictions(tbody, obj.vanilla_cnn_100k_prediction, obj.vanilla_cnn_100k_probabilities, 'Vanilla CNN 100k');
             displayPredictions(tbody, obj.SVM2k_prediction, {}, 'SVM 2k');
+            displayPredictions(tbody, obj.SVM10k_prediction, {}, 'SVM 10k');
             displayPredictions(tbody, obj.VGG19_10k_prediction, obj.VGG19_10k_probabilities, 'VGG19_10k');
         }
     });
