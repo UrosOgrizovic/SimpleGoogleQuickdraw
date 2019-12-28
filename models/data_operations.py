@@ -18,7 +18,9 @@ def load_data(number_of_images_to_load_per_label):
     Y = []
     for lab in labels:
         for img in image_operations.load_images(file_path_prefix + lab + '.npy', number_of_images_to_load_per_label):
-            X.append(img)
+            # normalization
+            normalized_img = img/255.0
+            X.append(normalized_img)
             Y.append(labels[lab])
 
     return X, Y
