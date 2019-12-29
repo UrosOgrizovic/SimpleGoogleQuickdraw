@@ -32,21 +32,21 @@ def make_prediction_for_image(image, model_name):
     return reverse_labels[max_idx], to_return_probs
 
 if __name__ == "__main__":
-    # x, y = data_operations.transfer_learning_load_data(number_of_images_per_label)
-    # x_train, x_val, y_train, y_val = data_operations.create_train_and_validation_sets(x, y, True)
-    # base_model = VGG19(weights='imagenet', include_top=False, input_shape=(32, 32, 3))
-    #
-    # # model has to be tweaked because the number of classes isn't the same
-    # outputs = base_model.output
-    # outputs = Dense(1024, activation='relu')(outputs)
-    # outputs = Dense(1024, activation='relu')(outputs)
-    # outputs = Dense(1024, activation='relu')(outputs)
-    # outputs = Flatten()(outputs)
-    # predictions = Dense(len(labels.keys()), activation='softmax')(outputs)
-    # model = Model(inputs=base_model.input, outputs=predictions)
-    # model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.RMSprop(lr=1e-4), metrics=['acc'])
-    # model.fit(x=x_train, y=y_train, validation_data=(x_val, y_val))
-    # model.save('VGG19_10k.h5')
+    x, y = data_operations.load_data(number_of_images_per_label, True)
+    x_train, x_val, y_train, y_val = data_operations.create_train_and_validation_sets(x, y, True)
+    base_model = VGG19(weights='imagenet', include_top=False, input_shape=(32, 32, 3))
+
+    # model has to be tweaked because the number of classes isn't the same
+    outputs = base_model.output
+    outputs = Dense(1024, activation='relu')(outputs)
+    outputs = Dense(1024, activation='relu')(outputs)
+    outputs = Dense(1024, activation='relu')(outputs)
+    outputs = Flatten()(outputs)
+    predictions = Dense(len(labels.keys()), activation='softmax')(outputs)
+    model = Model(inputs=base_model.input, outputs=predictions)
+    model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.RMSprop(lr=1e-4), metrics=['acc'])
+    model.fit(x=x_train, y=y_train, validation_data=(x_val, y_val))
+    model.save('VGG19_10k.h5')
 
     # model = load_model(os.path.join(dirname, 'VGG19_10k.h5'))
     # test_image = np.reshape(np.load(os.path.join(dirname, '../../data/img.npy')), (28, 28))
@@ -67,4 +67,3 @@ if __name__ == "__main__":
     # predicted_class = reverse_labels[reverse_labels_key]
     # print(display_predictions)
     # print(predicted_class)
-    pass

@@ -13,17 +13,21 @@ dirname = os.path.dirname(__file__)
 file_path_prefix = os.path.join(dirname, '../data/full_numpy_bitmap_')
 # os.path.join(dirname, '../../data/img.npy')
 
-def load_data(number_of_images_to_load_per_label):
-    X = []
-    Y = []
+
+def load_data(number_of_images_to_load_per_label, is_transfer_learning=False):
+    x = []
+    y = []
     for lab in labels:
         for img in image_operations.load_images(file_path_prefix + lab + '.npy', number_of_images_to_load_per_label):
+            if is_transfer_learning:
+                img = image_operations.pad_image(img)
+                img = np.repeat(img[..., np.newaxis], 3, -1)
             # normalization
             normalized_img = img/255.0
-            X.append(normalized_img)
-            Y.append(labels[lab])
+            x.append(normalized_img)
+            y.append(labels[lab])
 
-    return X, Y
+    return x, y
 
 
 def plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss):
@@ -57,7 +61,6 @@ def plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss):
     plt.show()
 
 
-
 def create_train_and_validation_sets(x, y, is_transfer_learning=False):
     x = np.array(x)
     if not is_transfer_learning:
@@ -70,21 +73,6 @@ def create_train_and_validation_sets(x, y, is_transfer_learning=False):
 
     x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.20, random_state=2)
     return x_train, x_val, y_train, y_val
-
-
-def transfer_learning_load_data(number_of_images_to_load_per_label):
-    X = []
-    Y = []
-    for lab in labels:
-        for img in image_operations.load_images(file_path_prefix + lab + '.npy', number_of_images_to_load_per_label):
-            img = np.reshape(img, (28, 28))
-            img = np.pad(img, 2)
-            img = np.repeat(img[..., np.newaxis], 3, -1)
-
-            X.append(img)
-            Y.append(labels[lab])
-
-    return X, Y
 
 
 if __name__ == "__main__":
