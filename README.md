@@ -23,7 +23,9 @@ The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bit
 
 ## Vanilla CNN
 
-13 layers, excluding the input layer ([view architecture visualization](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/vanilla_cnn/vanilla_cnn_model%20architecture.svg)). Trained on both 10,000 images per label and 100,000 images per label. The latter case brought no noticeable improvement. 
+13 layers, excluding the input layer ([view architecture visualization](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/vanilla_cnn/vanilla_cnn_model%20architecture.svg)). Dropout was used to avoid overfitting. The kernel's dimensions are 3x3, which is an often-used kernel size. 
+
+This model was trained on both 10,000 images per label and 100,000 images per label. The latter case brought no noticeable improvement. 
 
 [Callbacks](https://keras.io/callbacks/) used:
 
@@ -65,6 +67,8 @@ Perhaps the performance of this model could be improved by performing a "grid se
 ## [VGG19](https://github.com/keras-team/keras-applications/blob/master/keras_applications/vgg19.py)
 
 Consists of 24 layers, excluding the input layer ([view architecture visualization](https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw/blob/master/models/transfer_learning/VGG19%20architecture.svg)). However, instead of using VGG19's fully connected layers, I used my own, because my problem doesn't have 1000 classes. Additionally, I had to pad Google's 28x28 images to 32x32 images, because this model doesn't accept images smaller than 32x32. 
+
+This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-of-the-art results in the ImageNet Challenge 2014 by adding more weight layers compared to previous models that had done well in that competition.
 
 # References
 [1] - https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf
