@@ -19,6 +19,10 @@ Bicycle: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/bi
 
 The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/The%20Mona%20Lisa.npy
 
+# How to run
+
+
+
 # Models
 
 ## Vanilla CNN
