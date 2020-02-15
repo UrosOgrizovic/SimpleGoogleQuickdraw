@@ -21,7 +21,19 @@ The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bit
 
 # How to run
 
+- clone the project via `git clone https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw.git`
 
+- download data (see [Fetching the data](#fetching-the-data))
+
+- create virtual environment (`virtualenv venv`)
+
+- in terminal, enter `set WRAPT_INSTALL_EXTENSIONS=false` (this is required due to a `pip install tensorflow` problem)
+
+- in terminal, enter `pip3 install -r requirements.txt` to install the dependencies
+
+- download VGG weights: https://drive.google.com/file/d/1uvpi0ugDtwueWnGk4m13jp3KK8HAbVCj/view?usp=sharing and place them in `models/transfer_learning`
+
+- run `web.py`
 
 # Models
 
