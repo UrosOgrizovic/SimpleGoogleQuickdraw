@@ -3,22 +3,6 @@ Soft Computing project, Software Engineering and Information Technologies, FTN, 
 
 Technologies used: Keras 2.3.1, Python 3.6.1, Tensorflow 2.0.0
 
-# Fetching the data
-
-Create a folder called `data` in project root, download and place the following files into that folder:
-
-Airplane: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/airplane.npy
-
-Alarm clock: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/alarm%20clock.npy
-
-Ant: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/ant.npy
-
-Axe: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/axe.npy
-
-Bicycle: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/bicycle.npy
-
-The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/The%20Mona%20Lisa.npy
-
 # How to run
 
 - clone the project via `git clone https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw.git`
@@ -34,6 +18,22 @@ The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bit
 - download VGG weights: https://drive.google.com/file/d/1uvpi0ugDtwueWnGk4m13jp3KK8HAbVCj/view?usp=sharing and place them in `models/transfer_learning`
 
 - run `web.py`
+
+# Fetching the data
+
+Create a folder called `data` in project root, download and place the following files into that folder:
+
+Airplane: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/airplane.npy
+
+Alarm clock: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/alarm%20clock.npy
+
+Ant: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/ant.npy
+
+Axe: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/axe.npy
+
+Bicycle: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/bicycle.npy
+
+The Mona Lisa: https://storage.cloud.google.com/quickdraw_dataset/full/numpy_bitmap/The%20Mona%20Lisa.npy
 
 # Models
 
