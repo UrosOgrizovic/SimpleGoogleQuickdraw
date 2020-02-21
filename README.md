@@ -78,7 +78,7 @@ Training was very slow; [from docs](https://scikit-learn.org/stable/modules/gene
 
 Perhaps the performance of this model could be improved by performing a "grid search" on *C* and *gamma* using cross-validation [1].
 
-<sup>2</sup>*C* tells the SVM optimization how much to avoid misclassifying each training example by (large *C* - small hyperplane, and vice versa), and *gamma* defines how far the influence of a single training example (i.e. point) reaches (large *gamma* - the decision boundary will only depend on the points close to it, that is each point's influence radius will be small, and vice versa).
+<sup>2</sup>*C* tells the SVM optimization how much to avoid misclassifying each training example by (large *C* - small hyperplane, and vice versa), and *gamma* defines how far the influence of a single training example (i.e. point) reaches (large *gamma* - the decision boundary will only depend on the points close to it - that is, each point's influence radius will be small, and vice versa).
 
 ## [VGG19](https://github.com/keras-team/keras-applications/blob/master/keras_applications/vgg19.py)
 
