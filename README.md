@@ -51,7 +51,7 @@ This model was trained on both 10,000 images per label and 100,000 images per la
 
 - [ModelCheckpoint](https://github.com/keras-team/keras/blob/master/keras/callbacks/callbacks.py#L633) was used with the `save_best_only` flag set to `True`, so as to only save the latest best model (i.e. the best model out of all the epochs) according to the validation loss.
 
-- [ReduceLROnPlateau](https://github.com/keras-team/keras/blob/master/keras/callbacks/callbacks.py#L946) was used because models often benefit from reducing the learning rate by a factor of 2-10 once learning stagnates. Yet again, the monitored value was the validation loss.
+- [ReduceLROnPlateau](https://github.com/keras-team/keras/blob/master/keras/callbacks/callbacks.py#L946) was used because models often benefit from reducing the learning rate by a factor of 2-10 once learning stagnates [2]. Yet again, the monitored value was the validation loss.
 
 [Constraints](https://keras.io/constraints/) used:
 
@@ -87,4 +87,6 @@ Consists of 24 layers, excluding the input layer ([view architecture visualizati
 This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-of-the-art results in the ImageNet Challenge 2014 by adding more weight layers compared to previous models that had done well in that competition.
 
 # References
-[1] - https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf
+[1] - [Hsu, Chih-Wei, Chih-Chung Chang, and Chih-Jen Lin. "A practical guide to support vector classification." (2003): 1396-1400.](https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf)
+
+[2] - [Ravaut, Mathieu, and Satya Gorti. "Gradient descent revisited via an adaptive online learning rate." arXiv preprint arXiv:1801.09136 (2018).](https://arxiv.org/pdf/1801.09136.pdf)
