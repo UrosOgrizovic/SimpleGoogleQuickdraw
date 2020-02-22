@@ -3,6 +3,10 @@ Soft Computing project, Software Engineering and Information Technologies, FTN, 
 
 Technologies used: Keras 2.3.1, Python 3.6.1, Tensorflow 2.0.0
 
+# Demo
+
+<a href="https://media.giphy.com/media/Ri2xsHaPlKv2sbv4pz/giphy.gif"><img src="https://media.giphy.com/media/Ri2xsHaPlKv2sbv4pz/giphy.gif"/></a>
+
 # How to run
 
 - clone the project via `git clone https://github.com/UrosOgrizovic/SimpleGoogleQuickdraw.git`
