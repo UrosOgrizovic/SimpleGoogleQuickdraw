@@ -42,9 +42,10 @@ def save_image():
                                                                                       'vanilla_cnn_model_100k.h5')
         svm2k_prediction = SVM.make_prediction_for_image(loaded_image, 'SVM_2k.joblib')
         svm10k_prediction = SVM.make_prediction_for_image(loaded_image, 'SVM_10k.joblib')
+
         vgg19_10k_prediction, vgg19_10k_probs = transfer_learning.make_prediction_for_image(loaded_image,
                                                                                             'VGG19_10k.h5')
-
+        
         to_return = {'prediction': vanilla_cnn_10k_prediction, 'probabilities': vanilla_cnn_10k_probs,
                      'vanilla_cnn_100k_prediction': vanilla_cnn_100k_prediction,
                      'vanilla_cnn_100k_probabilities': vanilla_cnn_100k_probs,
