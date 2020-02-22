@@ -56,9 +56,7 @@ This model was trained on both 10,000 images per label and 100,000 images per la
 [Constraints](https://keras.io/constraints/) used:
 
 - [MaxNorm](https://github.com/keras-team/keras/blob/master/keras/constraints.py#L22) is a type of [weight constraint](https://arxiv.org/pdf/1602.07868.pdf).<sup>1</sup> From [Dropout: A Simple Way to Prevent Neural Networks from
-Overfitting](http://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf): *"One particular form of regularization was found to be especially useful for dropout—constraining the norm of the incoming weight vector at each hidden unit to be upper bounded by a fixed constant c."* Weight normalization works by decoupling the norm of the weight vector from the direction of the weight vector. This decoupling accelerates the convergence of stochastic gradient descent.
-
-<sup>1</sup>For CNNs, weight normalization is computationally cheaper than [batch normalization](https://arxiv.org/pdf/1502.03167.pdf), because the number of pre-activations tends to be larger than the number of weights. Furthermore, convolutions use the same filter in multiple locations (in the sense that the filter slides over the input data for that layer), which means that going through all the weights is much faster than going through all the images.
+Overfitting](http://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf): *"One particular form of regularization was found to be especially useful for dropout—constraining the norm of the incoming weight vector at each hidden unit to be upper bounded by a fixed constant c."* 
 
 Plots:
 
