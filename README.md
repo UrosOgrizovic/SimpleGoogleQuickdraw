@@ -88,6 +88,15 @@ Consists of 24 layers, excluding the input layer ([view architecture visualizati
 
 This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-of-the-art results in the ImageNet Challenge 2014 by adding more weight layers compared to previous models that had done well in that competition.
 
+## Accuracy-per-model
+
+set | CNN 10k  | CNN 100k | SVM 2k | SVM 10k | VGG 10k | VGG 100k |
+--- | -------- | -------- | ------ | ------- | ------- | -------- |
+train | ~60%  | ~85%  | ~85%  | ~82%  | ~90% | ~93% |
+validaiton | ~70%  | ~85%  | N/A*  | ~84%  | ~95% | ~94% |
+
+\* For SVM 2k, the data was not divided into train and validation sets, as there were too few examples
+
 # References
 [1] - [Hsu, Chih-Wei, Chih-Chung Chang, and Chih-Jen Lin. "A practical guide to support vector classification." (2003): 1396-1400.](https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf)
 
