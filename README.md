@@ -88,7 +88,7 @@ Consists of 24 layers, excluding the input layer ([view architecture visualizati
 
 This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-of-the-art results in the ImageNet Challenge 2014 by adding more weight layers compared to previous models that had done well in that competition.
 
-## Accuracy-per-model
+## Accuracy per model
 
 set | CNN 10k  | CNN 100k | SVM 2k | SVM 10k | VGG 10k | VGG 100k |
 --- | -------- | -------- | ------ | ------- | ------- | -------- |
