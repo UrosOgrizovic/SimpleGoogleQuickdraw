@@ -13,7 +13,7 @@ from keras.applications.vgg19 import VGG19
 from constants import labels, reverse_labels
 dirname = os.path.dirname(__file__)
 
-number_of_images_per_label = 10000
+number_of_images_per_label = 100000
 
 def make_prediction_for_image(image, model_name):
     image = np.reshape(image, (28, 28))
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     model = Model(inputs=base_model.input, outputs=predictions)
     model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.RMSprop(lr=1e-4), metrics=['acc'])
     model.fit(x=x_train, y=y_train, validation_data=(x_val, y_val))
-    model.save('VGG19_10k.h5')
+    # model.save('VGG19_10k.h5')
 
     # model = load_model(os.path.join(dirname, 'VGG19_10k.h5'))
     # test_image = np.reshape(np.load(os.path.join(dirname, '../../data/img.npy')), (28, 28))
