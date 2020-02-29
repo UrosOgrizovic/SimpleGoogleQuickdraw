@@ -11,9 +11,10 @@ from models import data_operations
 from keras.callbacks.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from keras.applications.vgg19 import VGG19
 from constants import labels, reverse_labels
+from sklearn.metrics import confusion_matrix, classification_report
 dirname = os.path.dirname(__file__)
 
-number_of_images_per_label = 100000
+number_of_images_per_label = 10000
 
 def make_prediction_for_image(image, model_name):
     image = np.reshape(image, (28, 28))
@@ -34,21 +35,32 @@ def make_prediction_for_image(image, model_name):
 if __name__ == "__main__":
     x, y = data_operations.load_data(number_of_images_per_label, True)
     x_train, x_val, y_train, y_val = data_operations.create_train_and_validation_sets(x, y, True)
-    base_model = VGG19(weights='imagenet', include_top=False, input_shape=(32, 32, 3))
+    # base_model = VGG19(weights='imagenet', include_top=False, input_shape=(32, 32, 3))
 
     # model has to be tweaked because the number of classes isn't the same
-    outputs = base_model.output
-    outputs = Dense(1024, activation='relu')(outputs)
-    outputs = Dense(1024, activation='relu')(outputs)
-    outputs = Dense(1024, activation='relu')(outputs)
-    outputs = Flatten()(outputs)
-    predictions = Dense(len(labels.keys()), activation='softmax')(outputs)
-    model = Model(inputs=base_model.input, outputs=predictions)
-    model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.RMSprop(lr=1e-4), metrics=['acc'])
-    model.fit(x=x_train, y=y_train, validation_data=(x_val, y_val))
+    # outputs = base_model.output
+    # outputs = Dense(1024, activation='relu')(outputs)
+    # outputs = Dense(1024, activation='relu')(outputs)
+    # outputs = Dense(1024, activation='relu')(outputs)
+    # outputs = Flatten()(outputs)
+    # predictions = Dense(len(labels.keys()), activation='softmax')(outputs)
+    # model = Model(inputs=base_model.input, outputs=predictions)
+    # model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.RMSprop(lr=1e-4), metrics=['acc'])
+    # model.fit(x=x_train, y=y_train, validation_data=(x_val, y_val))
     # model.save('VGG19_10k.h5')
 
-    # model = load_model(os.path.join(dirname, 'VGG19_10k.h5'))
+    model = load_model(os.path.join(dirname, 'VGG19_10k.h5'))
+    y_train_pred = model.predict(x_train)
+    y_train_pred = np.argmax(y_train_pred, axis=1)
+    y_val_pred = np.argmax(model.predict(x_val), axis=1)
+    # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
+    y_train = np.argmax(y_train, axis=1)
+    y_val = np.argmax(y_val, axis=1)
+
+    print(confusion_matrix(y_train, y_train_pred))
+    print(classification_report(y_train, y_train_pred))
+
+    print(classification_report(y_val, y_val_pred))
     # test_image = np.reshape(np.load(os.path.join(dirname, '../../data/img.npy')), (28, 28))
     # image_operations.display_image(test_image)
     # test_image = np.pad(test_image, 2)

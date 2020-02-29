@@ -12,6 +12,7 @@ from keras.callbacks.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROn
 from keras.regularizers import l2
 from keras.constraints import max_norm  # trying weight constraints
 from constants import labels, reverse_labels
+from sklearn.metrics import confusion_matrix, classification_report
 dirname = os.path.dirname(__file__)
 
 
@@ -96,17 +97,33 @@ if __name__ == "__main__":
     x_train, x_val, y_train, y_val = data_operations.create_train_and_validation_sets(x, y)
     # print(x_train.shape)
 
-    # model = load_model(os.path.join(dirname, 'vanilla_cnn_model_100k.h5'))
+    model = load_model(os.path.join(dirname, 'vanilla_cnn_model_100k.h5'))
     # print(model.summary())
 
-    history = create_train_save_model(x_train, x_val, y_train, y_val)
-    # get the details form the history object
-    train_acc = history.history['acc']
-    val_acc = history.history['val_acc']
-    train_loss = history.history['loss']
-    val_loss = history.history['val_loss']
+    y_train_pred = model.predict(x_train)
+    y_train_pred = np.argmax(y_train_pred, axis=1)
+    y_val_pred = np.argmax(model.predict(x_val), axis=1)
 
-    data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
+    # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
+    y_train = np.argmax(y_train, axis=1)
+    y_val = np.argmax(y_val, axis=1)
+
+    print(confusion_matrix(y_train, y_train_pred))
+    print(classification_report(y_train, y_train_pred))
+
+    print(classification_report(y_val, y_val_pred))
+
+
+
+
+    # history = create_train_save_model(x_train, x_val, y_train, y_val)
+    # get the details form the history object
+    # train_acc = history.history['acc']
+    # val_acc = history.history['val_acc']
+    # train_loss = history.history['loss']
+    # val_loss = history.history['val_loss']
+    #
+    # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
 
     # test_image = image_operations.load_images(os.path.join(dirname, '../../data/img.npy'))
 

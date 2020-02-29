@@ -6,6 +6,7 @@ import numpy as np
 from joblib import dump, load
 from constants import labels, reverse_labels
 from sklearn.model_selection import train_test_split
+import cv2
 dirname = os.path.dirname(__file__)
 
 
@@ -19,10 +20,11 @@ def make_prediction_for_image(image, model_name):
 
 
 if __name__ == "__main__":
-    x, y = data_operations.load_data(10000)
+    x, y = data_operations.load_data(2000, False)
 
     x = np.array(x)
     y = np.array(y)
+
 
     x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.20, random_state=2)
 
@@ -37,9 +39,10 @@ if __name__ == "__main__":
     # clf.fit(x_train, y_train)
     # print(clf.score(x_val, y_val))
     # dump(clf, 'SVM_10k.joblib', compress=3)
-    clf = load('SVM_10k.joblib')
+    # clf = load('SVM_10k.joblib')
     # clf.fit(x_train, y_train)
-    print(clf.score(x_train, y_train))
+    # print(clf.score(x_train, y_train))
+
     # test_image = np.array(image_operations.load_images(os.path.join(dirname, '../../data/img.npy')))
     # # image_operations.display_image(np.squeeze(test_image))
     # test_image = test_image.reshape(test_image.shape[0], test_image.shape[1] * test_image.shape[2])
