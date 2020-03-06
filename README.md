@@ -59,7 +59,7 @@ This model was trained on both 10,000 images per label and 100,000 images per la
 
 [Constraints](https://keras.io/constraints/) used:
 
-- [MaxNorm](https://github.com/keras-team/keras/blob/master/keras/constraints.py#L22) is a type of [weight constraint](https://arxiv.org/pdf/1602.07868.pdf).<sup>1</sup> From [Dropout: A Simple Way to Prevent Neural Networks from
+- [MaxNorm](https://github.com/keras-team/keras/blob/master/keras/constraints.py#L22) is a type of [weight constraint](https://arxiv.org/pdf/1602.07868.pdf). From [Dropout: A Simple Way to Prevent Neural Networks from
 Overfitting](http://www.cs.toronto.edu/~rsalakhu/papers/srivastava14a.pdf): *"One particular form of regularization was found to be especially useful for dropout—constraining the norm of the incoming weight vector at each hidden unit to be upper bounded by a fixed constant c."* 
 
 Plots:
