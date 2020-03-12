@@ -90,13 +90,44 @@ This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-
 
 ## Accuracy per model
 
-set | CNN 10k  | CNN 100k | SVM 2k | SVM 10k | VGG 10k | VGG 100k |
-:---: | :--------: | :--------: | :------: | :-------: | :-------: | :--------: |
-train | ~46%  | ~85%  | ~85%  | ~82%  | ~90% | ~93% |
-validation | ~57%  | ~85%  | N/A*  | ~84%  | ~95% | ~94% |
-test | ~25% | - | - | - | ~95% | - |
+<table align="center">
+  <thead>
+    <th>set</th>
+    <th>CNN 10k</th>
+    <th>CNN 100k</th>
+    <th>SVM 2k</th>
+    <th>SVM 10k</th>
+    <th>VGG 10k</th>
+    <th>VGG 100k</th>
+  </thead>
+  <tbody align="center">
+    <tr>
+      <td>train</td>
+      <td>~46%</td>
+      <td>~85%</td>
+      <td rowspan=3>~83%*</td>
+      <td rowspan=3>-*</td>
+      <td>~90%</td>
+      <td>~93%</td>
+    </tr>
+    <tr>
+      <td>validation</td>
+      <td>~57%</td>
+      <td>~85%</td>
+      <td>~95%</td>
+      <td>~94%</td>
+    </tr>
+    <tr>
+      <td style="text-align:center">test</td>
+      <td style="text-align:center">~25%</td>
+      <td style="text-align:center">-</td>
+      <td style="text-align:center">~95%</td>
+      <td style="text-align:center">-</td>
+    </tr>
+  </tbody>
+</table>
 
-\* For SVM 2k, the data was not divided into train and validation sets, as there were too few examples
+\* 10-fold cross validation was done for the SVM models, so there is only one accuracy to report
 
 # References
 [1] - [Hsu, Chih-Wei, Chih-Chung Chang, and Chih-Jen Lin. "A practical guide to support vector classification." (2003): 1396-1400.](https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf)
