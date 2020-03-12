@@ -91,9 +91,10 @@ This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-
 ## Accuracy per model
 
 set | CNN 10k  | CNN 100k | SVM 2k | SVM 10k | VGG 10k | VGG 100k |
---- | -------- | -------- | ------ | ------- | ------- | -------- |
+:---: | :--------: | :--------: | :------: | :-------: | :-------: | :--------: |
 train | ~46%  | ~85%  | ~85%  | ~82%  | ~90% | ~93% |
-validaiton | ~57%  | ~85%  | N/A*  | ~84%  | ~95% | ~94% |
+validation | ~57%  | ~85%  | N/A*  | ~84%  | ~95% | ~94% |
+test | ~25% | - | - | - | - | - |
 
 \* For SVM 2k, the data was not divided into train and validation sets, as there were too few examples
 
