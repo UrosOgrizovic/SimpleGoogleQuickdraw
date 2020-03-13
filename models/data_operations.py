@@ -61,7 +61,7 @@ def plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss):
     plt.show()
 
 
-def create_train_and_validation_sets(x, y, is_transfer_learning=False):
+def create_train_and_test_sets(x, y, is_transfer_learning=False):
     x = np.array(x)
     if not is_transfer_learning:
         # (?, 28, 28) -> (?, 28, 28, 1)
@@ -71,8 +71,8 @@ def create_train_and_validation_sets(x, y, is_transfer_learning=False):
 
     y = keras.utils.to_categorical(y, num_classes=len(labels.keys()), dtype='uint8')
 
-    x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.20, random_state=2)
-    return x_train, x_val, y_train, y_val
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=2)
+    return x_train, x_test, y_train, y_test
 
 
 if __name__ == "__main__":

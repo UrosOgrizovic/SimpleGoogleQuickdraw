@@ -12,6 +12,7 @@ from keras.callbacks.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROn
 from keras.regularizers import l2
 from keras.constraints import max_norm  # trying weight constraints
 from constants import labels, reverse_labels
+import math
 from sklearn.metrics import confusion_matrix, classification_report
 dirname = os.path.dirname(__file__)
 
@@ -21,7 +22,7 @@ batch_size = 32
 number_of_images_per_label = 10000
 
 
-def create_train_save_model(x_train, x_val, y_train, y_val):
+def create_train_save_model(x_train, y_train):
     model = Sequential()
     model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1), kernel_constraint=max_norm(3), bias_constraint=max_norm(3)))
     model.add(MaxPooling2D((2, 2)))
@@ -41,6 +42,10 @@ def create_train_save_model(x_train, x_val, y_train, y_val):
     model.add(Dense(len(labels), activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.RMSprop(lr=1e-4), metrics=['acc'])
 
+    x_train = x_train[:math.ceil(0.8*len(x_train))]
+    x_val = x_train[math.ceil(0.8*len(x_train)):]
+    y_train = y_train[:math.ceil(0.8 * len(y_train))]
+    y_val = y_train[math.ceil(0.8 * len(y_train)):]
     train_data_gen = ImageDataGenerator(rescale=1. / 255,
                                         rotation_range=40,
                                         width_shift_range=0.2,
@@ -94,29 +99,32 @@ def make_prediction_for_image(image, model_name):
 
 if __name__ == "__main__":
     x, y = data_operations.load_data(number_of_images_per_label)
-    x_train, x_val, y_train, y_val = data_operations.create_train_and_validation_sets(x, y)
+    x_train, x_test, y_train, y_test = data_operations.create_train_and_test_sets(x, y)
     # print(x_train.shape)
 
-    model = load_model(os.path.join(dirname, 'vanilla_cnn_model_100k.h5'))
+    model = load_model(os.path.join(dirname, 'vanilla_cnn_model_10k.h5'))
     # print(model.summary())
+    # print(model.summary())
+    #
+    # y_train_pred = model.predict(x_train)
+    # y_train_pred = np.argmax(y_train_pred, axis=1)
+    # y_test_pred = np.argmax(model.predict(x_test), axis=1)
+    #
+    # # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
+    # y_train = np.argmax(y_train, axis=1)
+    # y_test = np.argmax(y_test, axis=1)
+    #
+    # print(confusion_matrix(y_train, y_train_pred))
+    # print(classification_report(y_train, y_train_pred))
+    #
+    # print(classification_report(y_test, y_test_pred))
+    print(model.metrics_names)
+    print(model.evaluate(x_test, y_test))
 
-    y_train_pred = model.predict(x_train)
-    y_train_pred = np.argmax(y_train_pred, axis=1)
-    y_val_pred = np.argmax(model.predict(x_val), axis=1)
-
-    # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
-    y_train = np.argmax(y_train, axis=1)
-    y_val = np.argmax(y_val, axis=1)
-
-    print(confusion_matrix(y_train, y_train_pred))
-    print(classification_report(y_train, y_train_pred))
-
-    print(classification_report(y_val, y_val_pred))
 
 
 
-
-    # history = create_train_save_model(x_train, x_val, y_train, y_val)
+    # history = create_train_save_model(x_train, y_train)
     # get the details form the history object
     # train_acc = history.history['acc']
     # val_acc = history.history['val_acc']
