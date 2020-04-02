@@ -14,6 +14,13 @@ from keras.constraints import max_norm  # trying weight constraints
 from constants import labels, reverse_labels
 import math
 from sklearn.metrics import confusion_matrix, classification_report
+from loguru import logger
+import time
+from kerastuner.tuners import RandomSearch
+from models import HyperModels
+from pathlib import Path
+
+
 dirname = os.path.dirname(__file__)
 
 
@@ -22,23 +29,43 @@ batch_size = 32
 number_of_images_per_label = 10000
 
 
+def define_random_tuner(num_classes, directory=Path("./"), project_name="vanilla_cnn_tuning"):
+    random_tuner = RandomSearch(
+        HyperModels.CNNHyperModel(input_shape=(28, 28, 1), num_classes=num_classes),
+        objective="val_loss",
+        max_trials=40,
+        executions_per_trial=2,
+        directory=f"{directory}_random_search",
+        project_name=project_name,
+    )
+
+    return random_tuner
+
 def create_train_save_model(x_train, y_train):
+
+    # Hyperparameter values were calculated by keras tuners
     model = Sequential()
-    model.add(Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1), kernel_constraint=max_norm(3), bias_constraint=max_norm(3)))
+    model.add(Conv2D(64, (3, 3), activation='relu', input_shape=(28, 28, 1), kernel_constraint=max_norm(3),
+                     bias_constraint=max_norm(3)))
     model.add(MaxPooling2D((2, 2)))
-    model.add(Dropout(0.3))
+    model.add(Dropout(0.1))
+
     model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3)))
     model.add(MaxPooling2D((2, 2)))
-    model.add(Dropout(0.3))
+    model.add(Dropout(0.15))
+
     model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3)))
     model.add(MaxPooling2D((2, 2)))
-    model.add(Dropout(0.3))
-    model.add(Conv2D(256, (3, 3), activation='relu', padding='same', kernel_constraint=max_norm(3), bias_constraint=max_norm(3)))
+    model.add(Dropout(0.2))
+
+    model.add(Conv2D(256, (3, 3), activation='relu', padding='same', kernel_constraint=max_norm(3),
+                     bias_constraint=max_norm(3)))
     model.add(MaxPooling2D((2, 2), padding='same'))
-    model.add(Dropout(0.3))
+    model.add(Dropout(0.05))
+
     model.add(Flatten())
-    model.add(Dropout(0.3))  # Dropout for regularization
-    model.add(Dense(1024, activation='relu', kernel_regularizer=l2(l=0.001)))
+    # model.add(Dropout(0.25))  # Dropout for regularization
+    model.add(Dense(768, activation='relu', kernel_regularizer=l2(l=0.001)))
     model.add(Dense(len(labels), activation='softmax'))
     model.compile(loss='categorical_crossentropy', optimizer=keras.optimizers.RMSprop(lr=1e-4), metrics=['acc'])
 
@@ -46,6 +73,18 @@ def create_train_save_model(x_train, y_train):
     x_val = x_train[math.ceil(0.8*len(x_train)):]
     y_train = y_train[:math.ceil(0.8 * len(y_train))]
     y_val = y_train[math.ceil(0.8 * len(y_train)):]
+
+    # tuner = define_random_tuner(num_classes=len(labels))
+    # tuner.search(x_train, y_train, epochs=20, validation_data=(x_val, y_val))
+    # tuner.results_summary()
+    # print('-------------------------------------')
+    # best_hp = tuner.get_best_hyperparameters()[0]
+    # model = tuner.hypermodel.build(best_hp)
+    # print(model.get_config())
+    #
+    # quit()
+
+
     train_data_gen = ImageDataGenerator(rescale=1. / 255,
                                         rotation_range=40,
                                         width_shift_range=0.2,
@@ -100,24 +139,25 @@ def make_prediction_for_image(image, model_name):
 if __name__ == "__main__":
     x, y = data_operations.load_data(number_of_images_per_label)
     x_train, x_test, y_train, y_test = data_operations.create_train_and_test_sets(x, y)
-    # print(x_train.shape)
 
-    model = load_model(os.path.join(dirname, 'vanilla_cnn_model_10k.h5'))
-    # print(model.summary())
-    # print(model.summary())
     #
-    # y_train_pred = model.predict(x_train)
-    # y_train_pred = np.argmax(y_train_pred, axis=1)
-    # y_test_pred = np.argmax(model.predict(x_test), axis=1)
+    model = load_model(os.path.join(dirname, 'vanilla_cnn_model_10k.h5'))
+    #
+    y_train_pred = model.predict(x_train)
+    y_train_pred = np.argmax(y_train_pred, axis=1)
+    y_test_pred = np.argmax(model.predict(x_test), axis=1)
+
+
     #
     # # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
-    # y_train = np.argmax(y_train, axis=1)
-    # y_test = np.argmax(y_test, axis=1)
-    #
-    # print(confusion_matrix(y_train, y_train_pred))
-    # print(classification_report(y_train, y_train_pred))
-    #
-    # print(classification_report(y_test, y_test_pred))
+    y_train = np.argmax(y_train, axis=1)
+    y_test = np.argmax(y_test, axis=1)
+
+    print(confusion_matrix(y_train, y_train_pred))
+    print(classification_report(y_train, y_train_pred))
+
+    print(classification_report(y_test, y_test_pred))
+
     print(model.metrics_names)
     print(model.evaluate(x_test, y_test))
 
@@ -130,7 +170,6 @@ if __name__ == "__main__":
     # val_acc = history.history['val_acc']
     # train_loss = history.history['loss']
     # val_loss = history.history['val_loss']
-    #
     # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
 
     # test_image = image_operations.load_images(os.path.join(dirname, '../../data/img.npy'))
