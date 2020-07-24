@@ -15,6 +15,7 @@ def load_images(file_path, how_many=-1, is_transfer_learning=False):
     """
 
     img_array = np.load(file_path)
+    np.random.shuffle(img_array)
     if how_many != -1:
         img_array = img_array[:how_many]
     if is_transfer_learning:

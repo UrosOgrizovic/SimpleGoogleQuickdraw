@@ -13,6 +13,12 @@ from models.transfer_learning import transfer_learning
 dirname = os.path.dirname(__file__)
 app = Flask(__name__)
 
+cnn_10k_model = vanilla_cnn.get_model('vanilla_cnn_model_10k.h5')
+cnn_100k_model = vanilla_cnn.get_model('vanilla_cnn_model_100k.h5')
+svm_2k_model = SVM.get_model('SVM_2k.joblib')
+svm_10k_model = SVM.get_model('SVM_10k.joblib')
+vgg_10k_model = transfer_learning.get_model('VGG19_10k.h5')
+
 @app.route('/')
 def hello():
     return render_template('index.html')
@@ -37,14 +43,14 @@ def save_image():
 
         # image_operations.display_image(loaded_image)
         vanilla_cnn_10k_prediction, vanilla_cnn_10k_probs = vanilla_cnn.make_prediction_for_image(loaded_image,
-                                                                  'vanilla_cnn_model_10k.h5')
+                                                                  cnn_10k_model)
         vanilla_cnn_100k_prediction, vanilla_cnn_100k_probs = vanilla_cnn.make_prediction_for_image(loaded_image,
-                                                                                      'vanilla_cnn_model_100k.h5')
-        svm2k_prediction = SVM.make_prediction_for_image(loaded_image, 'SVM_2k.joblib')
-        svm10k_prediction = SVM.make_prediction_for_image(loaded_image, 'SVM_10k.joblib')
+                                                                                      cnn_100k_model)
+        svm2k_prediction = SVM.make_prediction_for_image(loaded_image, svm_2k_model)
+        svm10k_prediction = SVM.make_prediction_for_image(loaded_image, svm_10k_model)
 
         vgg19_10k_prediction, vgg19_10k_probs = transfer_learning.make_prediction_for_image(loaded_image,
-                                                                                            'VGG19_10k.h5')
+                                                                                            vgg_10k_model)
         
         to_return = {'prediction': vanilla_cnn_10k_prediction, 'probabilities': vanilla_cnn_10k_probs,
                      'vanilla_cnn_100k_prediction': vanilla_cnn_100k_prediction,

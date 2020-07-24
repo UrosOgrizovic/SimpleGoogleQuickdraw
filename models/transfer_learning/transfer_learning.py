@@ -16,10 +16,12 @@ dirname = os.path.dirname(__file__)
 
 number_of_images_per_label = 10000
 
-def make_prediction_for_image(image, model_name):
-    image = np.reshape(image, (28, 28))
+def get_model(model_name):
+    return load_model(os.path.join(dirname, model_name))
 
-    model = load_model(os.path.join(dirname, model_name))
+
+def make_prediction_for_image(image, model):
+    image = np.reshape(image, (28, 28))
     image = np.pad(image, 2)
     image = np.repeat(image[..., np.newaxis], 3, -1)
     # (32, 32, 3) -> (1, 32, 32, 3)

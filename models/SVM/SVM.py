@@ -10,11 +10,14 @@ import cv2
 dirname = os.path.dirname(__file__)
 
 
-def make_prediction_for_image(image, model_name):
+def get_model(model_name):
+    return load(os.path.join(dirname, model_name))
+
+
+def make_prediction_for_image(image, model):
     image = np.array(image)
     image = image.reshape(image.shape[0], image.shape[1] * image.shape[2])
-    svm = load(os.path.join(dirname, model_name))
-    predicted = reverse_labels[svm.predict(image)[0]]
+    predicted = reverse_labels[model.predict(image)[0]]
 
     return predicted
 
@@ -41,19 +44,19 @@ if __name__ == "__main__":
 
 
 
-    parameters = {'C': [2**2, 2**3, 2**4, 2**5, 2**6]}
+    # parameters = {'C': [2**2, 2**3, 2**4, 2**5, 2**6]}
 
-    clf = GridSearchCV(svc, parameters, cv=10)
+    # clf = GridSearchCV(svc, parameters, cv=10)
+    #
+    # clf.fit(x_train, y_train)
 
-    clf.fit(x_train, y_train)
-
-    print(clf.best_params_)
+    # print(clf.best_params_)
 
     # dump(clf, 'SVM_2k.joblib', compress=3)
-    # clf = load('SVM_2k.joblib')
+    clf = load('SVM_2k.joblib')
 
-    # print(cross_val_score(clf, x_train, y_train, cv=10, n_jobs=-1))
-    # print(clf.score(x_train, y_train))
+
+    print(clf.score(x_train, y_train))
     print(clf.score(x_test, y_test))
 
     # test_image = np.array(image_operations.load_images(os.path.join(dirname, '../../data/img.npy')))

@@ -14,7 +14,6 @@ from keras.constraints import max_norm  # trying weight constraints
 from constants import labels, reverse_labels
 import math
 from sklearn.metrics import confusion_matrix, classification_report
-from loguru import logger
 import time
 from kerastuner.tuners import RandomSearch
 from models import HyperModels
@@ -46,22 +45,44 @@ def create_train_save_model(x_train, y_train):
     # Hyperparameter values were calculated by keras tuners
     model = Sequential()
     model.add(Conv2D(64, (3, 3), activation='relu', input_shape=(28, 28, 1), kernel_constraint=max_norm(3),
-                     bias_constraint=max_norm(3)))
-    model.add(MaxPooling2D((2, 2)))
+                     bias_constraint=max_norm(3), padding='same'))
+    model.add(MaxPooling2D((2, 2), padding='same'))
     model.add(Dropout(0.1))
 
-    model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3)))
-    model.add(MaxPooling2D((2, 2)))
+    model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
+    model.add(MaxPooling2D((2, 2), padding='same'))
     model.add(Dropout(0.15))
 
-    model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3)))
-    model.add(MaxPooling2D((2, 2)))
+    model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
+    model.add(MaxPooling2D((2, 2), padding='same'))
     model.add(Dropout(0.2))
+
+    # odavde
+    # model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
+    # model.add(MaxPooling2D((2, 2), padding='same'))
+    # model.add(Dropout(0.2))
+
+
+    # model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
+    # model.add(MaxPooling2D((2, 2), padding='same'))
+    # model.add(Dropout(0.2))
+    #
+    #
+    # model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
+    # model.add(MaxPooling2D((2, 2), padding='same'))
+    # model.add(Dropout(0.2))
+    #
+    #
+    # model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
+    # model.add(MaxPooling2D((2, 2), padding='same'))
+    # model.add(Dropout(0.2))
+
+    # dovde
 
     model.add(Conv2D(256, (3, 3), activation='relu', padding='same', kernel_constraint=max_norm(3),
                      bias_constraint=max_norm(3)))
     model.add(MaxPooling2D((2, 2), padding='same'))
-    model.add(Dropout(0.05))
+    # model.add(Dropout(0.05))
 
     model.add(Flatten())
     # model.add(Dropout(0.25))  # Dropout for regularization
@@ -85,18 +106,20 @@ def create_train_save_model(x_train, y_train):
     # quit()
 
 
-    train_data_gen = ImageDataGenerator(rescale=1. / 255,
+    ''' train_data_gen = ImageDataGenerator(rescale=1. / 255,
                                         rotation_range=40,
                                         width_shift_range=0.2,
                                         height_shift_range=0.2,
                                         shear_range=0.2,
                                         zoom_range=0.2,
                                         horizontal_flip=True)
+                                        '''
+    train_data_gen = ImageDataGenerator(rescale=1. / 255)
     val_data_gen = ImageDataGenerator(rescale=1. / 255)
     train_generator = train_data_gen.flow(x_train, y_train, batch_size=batch_size)
     val_generator = val_data_gen.flow(x_val, y_val, batch_size=batch_size)
 
-    early_stopping = EarlyStopping(monitor='val_loss', patience=5, verbose=0, mode='min')
+    early_stopping = EarlyStopping(monitor='val_loss', patience=7, verbose=0, mode='min')
     file_to_save_to = ''
     if number_of_images_per_label == 100000:
         file_to_save_to = 'vanilla_cnn_model_100k.h5'
@@ -105,7 +128,7 @@ def create_train_save_model(x_train, y_train):
     else:
         file_to_save_to = 'vanilla_cnn_model.h5'
     mcp_save = ModelCheckpoint(file_to_save_to, save_best_only=True, monitor='val_loss', mode='min')
-    reduce_lr_loss = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=7, verbose=1, min_delta=1e-4, mode='min')
+    reduce_lr_loss = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1, min_delta=1e-4, mode='min')
 
     # augmentation helps avoid overfitting
     history = model.fit_generator(train_generator,
@@ -120,8 +143,11 @@ def create_train_save_model(x_train, y_train):
     return history
 
 
-def make_prediction_for_image(image, model_name):
-    model = load_model(os.path.join(dirname, model_name), compile=False)
+def get_model(model_name):
+    return load_model(os.path.join(dirname, model_name), compile=False)
+
+
+def make_prediction_for_image(image, model):
     test_image = np.expand_dims(image, axis=-1)
     max_idx = np.argmax(model.predict(test_image))
     to_return_probs = {'airplane': 0, 'alarm clock': 0, 'axe': 0, 'The Mona Lisa': 0,
@@ -140,9 +166,7 @@ if __name__ == "__main__":
     x, y = data_operations.load_data(number_of_images_per_label)
     x_train, x_test, y_train, y_test = data_operations.create_train_and_test_sets(x, y)
 
-    #
     model = load_model(os.path.join(dirname, 'vanilla_cnn_model_10k.h5'))
-    #
     y_train_pred = model.predict(x_train)
     y_train_pred = np.argmax(y_train_pred, axis=1)
     y_test_pred = np.argmax(model.predict(x_test), axis=1)
@@ -153,24 +177,26 @@ if __name__ == "__main__":
     y_train = np.argmax(y_train, axis=1)
     y_test = np.argmax(y_test, axis=1)
 
+    print('Confusion matrix:')
     print(confusion_matrix(y_train, y_train_pred))
+    print('Classification report tr:')
     print(classification_report(y_train, y_train_pred))
-
+    print('Classification report tst:')
     print(classification_report(y_test, y_test_pred))
 
-    print(model.metrics_names)
-    print(model.evaluate(x_test, y_test))
+    # print(model.metrics_names)
+    # print(model.evaluate(x_test, y_test))
 
 
 
 
     # history = create_train_save_model(x_train, y_train)
-    # get the details form the history object
+    # # get the details form the history object
     # train_acc = history.history['acc']
     # val_acc = history.history['val_acc']
     # train_loss = history.history['loss']
     # val_loss = history.history['val_loss']
-    # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss)
+    # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss, '10k')
 
     # test_image = image_operations.load_images(os.path.join(dirname, '../../data/img.npy'))
 

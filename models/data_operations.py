@@ -30,13 +30,14 @@ def load_data(number_of_images_to_load_per_label, is_transfer_learning=False):
     return x, y
 
 
-def plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss):
+def plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss, num_images_per_label):
     """
     plots training and validation curves
     :param train_acc:
     :param val_acc:
     :param train_loss:
     :param val_loss:
+    :param num_images_per_label:
     :return:
     """
     epochs = range(1, len(train_acc) + 1)
@@ -47,7 +48,7 @@ def plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss):
     plt.xlabel('Epochs')
     plt.title('Training and Validation accurarcy')
     plt.legend()
-    plt.savefig('vanilla_cnn_10k_train_val_acc', bbox_inches='tight')
+    plt.savefig('vanilla_cnn_'+num_images_per_label+'_train_val_acc', bbox_inches='tight')
 
     plt.figure()
     # Train and validation loss
@@ -56,7 +57,7 @@ def plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss):
     plt.xlabel('Epochs')
     plt.title('Training and Validation loss')
     plt.legend()
-    plt.savefig('vanilla_cnn_10k_train_val_loss', bbox_inches='tight')
+    plt.savefig('vanilla_cnn_'+num_images_per_label+'_train_val_loss', bbox_inches='tight')
 
     plt.show()
 
