@@ -166,26 +166,26 @@ if __name__ == "__main__":
     x, y = data_operations.load_data(number_of_images_per_label)
     x_train, x_test, y_train, y_test = data_operations.create_train_and_test_sets(x, y)
 
-    model = load_model(os.path.join(dirname, 'vanilla_cnn_model_10k.h5'))
-    y_train_pred = model.predict(x_train)
-    y_train_pred = np.argmax(y_train_pred, axis=1)
-    y_test_pred = np.argmax(model.predict(x_test), axis=1)
+    model = load_model(os.path.join(dirname, 'vanilla_cnn_model_100k.h5'))
+    # y_train_pred = model.predict(x_train)
+    # y_train_pred = np.argmax(y_train_pred, axis=1)
+    # y_test_pred = np.argmax(model.predict(x_test), axis=1)
 
 
 
     # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
-    y_train = np.argmax(y_train, axis=1)
-    y_test = np.argmax(y_test, axis=1)
-
-    print('Confusion matrix:')
-    print(confusion_matrix(y_train, y_train_pred))
-    print('Classification report tr:')
-    print(classification_report(y_train, y_train_pred))
-    print('Classification report tst:')
-    print(classification_report(y_test, y_test_pred))
+    # y_train = np.argmax(y_train, axis=1)
+    # y_test = np.argmax(y_test, axis=1)
+    #
+    # print('Confusion matrix:')
+    # print(confusion_matrix(y_train, y_train_pred))
+    # print('Classification report tr:')
+    # print(classification_report(y_train, y_train_pred))
+    # print('Classification report tst:')
+    # print(classification_report(y_test, y_test_pred))
 
     # print(model.metrics_names)
-    # print(model.evaluate(x_test, y_test))
+    print(model.evaluate(x_test, y_test))
 
 
 
