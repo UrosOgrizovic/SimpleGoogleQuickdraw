@@ -172,8 +172,8 @@ if __name__ == "__main__":
     y_test_pred = np.argmax(model.predict(x_test), axis=1)
 
 
-    #
-    # # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
+
+    # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
     y_train = np.argmax(y_train, axis=1)
     y_test = np.argmax(y_test, axis=1)
 
