@@ -110,6 +110,3 @@ data/
 
 *.jpg
 *.jpeg
-
-# models
-VGG19_10k.h5
