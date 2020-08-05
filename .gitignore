@@ -106,7 +106,7 @@ venv.bak/
 .idea
 idea/
 
-data/
+data/img.npy
 
 *.jpg
 *.jpeg
