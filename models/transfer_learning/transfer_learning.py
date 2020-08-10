@@ -14,7 +14,7 @@ from sklearn.metrics import confusion_matrix, classification_report
 import math
 dirname = os.path.dirname(__file__)
 
-batch_size = 512
+batch_size = 32
 number_of_images_per_label = 100000
 
 def get_model(model_name):
@@ -46,10 +46,9 @@ if __name__ == "__main__":
 
     # model has to be tweaked because the number of classes isn't the same
     outputs = base_model.output
-
-    outputs = Dense(1024, activation='relu')(outputs)
-    outputs = Dropout(0.2)(outputs)
-    outputs = BatchNormalization()(outputs)
+    # outputs = Dense(1024, activation='relu')(outputs)
+    # outputs = Dropout(0.2)(outputs)
+    # outputs = BatchNormalization()(outputs)
     # outputs = Dense(1024, activation='relu')(outputs)
     # outputs = Dropout(0.5)(outputs)
     # outputs = BatchNormalization()(outputs)
@@ -67,13 +66,13 @@ if __name__ == "__main__":
     y_train = y_train[:math.ceil(0.8 * len(y_train))]
     y_val = y_train[math.ceil(0.8 * len(y_train)):]
 
-    train_data_gen = ImageDataGenerator(rescale=1. / 255)
-    val_data_gen = ImageDataGenerator(rescale=1. / 255)
+    train_data_gen = ImageDataGenerator(rescale=1. / 1)
+    val_data_gen = ImageDataGenerator(rescale=1. / 1)
     train_generator = train_data_gen.flow(x_train, y_train, batch_size=batch_size)
     val_generator = val_data_gen.flow(x_val, y_val, batch_size=batch_size)
-    early_stopping = EarlyStopping(monitor='val_loss', patience=5, verbose=0, mode='min', min_delta=0.1)
+    early_stopping = EarlyStopping(monitor='val_loss', patience=7, verbose=0, mode='min', min_delta=0.05)
     mcp_save = ModelCheckpoint('VGG19_100k.h5', save_best_only=True, monitor='val_loss', mode='min')
-    reduce_lr_loss = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=3, verbose=1, min_delta=1e-4, mode='min')
+    reduce_lr_loss = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1, min_delta=1e-4, mode='min')
     history = model.fit_generator(train_generator,
                         steps_per_epoch=len(x_train) // batch_size,
                         epochs=32,

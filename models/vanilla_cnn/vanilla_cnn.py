@@ -25,7 +25,7 @@ dirname = os.path.dirname(__file__)
 
 img_rows, img_cols = 28, 28
 batch_size = 32
-number_of_images_per_label = 10000
+number_of_images_per_label = 100000
 
 
 def define_random_tuner(num_classes, directory=Path("./"), project_name="vanilla_cnn_tuning"):
@@ -56,28 +56,6 @@ def create_train_save_model(x_train, y_train):
     model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
     model.add(MaxPooling2D((2, 2), padding='same'))
     model.add(Dropout(0.2))
-
-    # odavde
-    # model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
-    # model.add(MaxPooling2D((2, 2), padding='same'))
-    # model.add(Dropout(0.2))
-
-
-    # model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
-    # model.add(MaxPooling2D((2, 2), padding='same'))
-    # model.add(Dropout(0.2))
-    #
-    #
-    # model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
-    # model.add(MaxPooling2D((2, 2), padding='same'))
-    # model.add(Dropout(0.2))
-    #
-    #
-    # model.add(Conv2D(256, (3, 3), activation='relu', kernel_constraint=max_norm(3), bias_constraint=max_norm(3), padding='same'))
-    # model.add(MaxPooling2D((2, 2), padding='same'))
-    # model.add(Dropout(0.2))
-
-    # dovde
 
     model.add(Conv2D(256, (3, 3), activation='relu', padding='same', kernel_constraint=max_norm(3),
                      bias_constraint=max_norm(3)))
@@ -172,8 +150,7 @@ if __name__ == "__main__":
     # y_test_pred = np.argmax(model.predict(x_test), axis=1)
 
 
-
-    # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
+    # # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
     # y_train = np.argmax(y_train, axis=1)
     # y_test = np.argmax(y_test, axis=1)
     #
@@ -196,7 +173,7 @@ if __name__ == "__main__":
     # val_acc = history.history['val_acc']
     # train_loss = history.history['loss']
     # val_loss = history.history['val_loss']
-    # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss, '10k')
+    # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss, 'vanilla_cnn_100k')
 
     # test_image = image_operations.load_images(os.path.join(dirname, '../../data/img.npy'))
 
