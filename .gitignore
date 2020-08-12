@@ -106,7 +106,10 @@ venv.bak/
 .idea
 idea/
 
-data/img.npy
+data/
 
 *.jpg
 *.jpeg
+
+models/transfer_learning/VGG19_10k.h5
+models/transfer_learning/VGG19_100k.h5
