@@ -141,6 +141,7 @@ function submitDrawing() {
             displayPredictions(tbody, obj.SVM2k_prediction, {}, 'SVM 2k');
             displayPredictions(tbody, obj.SVM10k_prediction, {}, 'SVM 10k');
             displayPredictions(tbody, obj.VGG19_10k_prediction, obj.VGG19_10k_probabilities, 'VGG19_10k');
+            displayPredictions(tbody, obj.VGG19_100k_prediction, obj.VGG19_100k_probabilities, 'VGG19_100k');
         }
     });
 }

@@ -63,4 +63,8 @@ def convert_base64_to_numpy_array(decoded_base64):
 
 
 if __name__ == "__main__":
-    load_images('data/full_numpy_bitmap_airplane.npy')
+    imgs = load_images('data/full_numpy_bitmap_airplane.npy')
+    usr_img = load_images('data/img.npy')
+    usr_img[0] = usr_img[0]/255.0
+    print(imgs[0].shape, usr_img[0].shape)
+    # display_image(imgs[1])

@@ -40,7 +40,7 @@ def define_random_tuner(num_classes, directory=Path("./"), project_name="vanilla
 
     return random_tuner
 
-def create_train_save_model(x_train, y_train):
+def create_train_save_model(x_train, y_train, x_test, y_test):
 
     # Hyperparameter values were calculated by keras tuners
     model = Sequential()
@@ -83,17 +83,8 @@ def create_train_save_model(x_train, y_train):
     #
     # quit()
 
-
-    ''' train_data_gen = ImageDataGenerator(rescale=1. / 255,
-                                        rotation_range=40,
-                                        width_shift_range=0.2,
-                                        height_shift_range=0.2,
-                                        shear_range=0.2,
-                                        zoom_range=0.2,
-                                        horizontal_flip=True)
-                                        '''
-    train_data_gen = ImageDataGenerator(rescale=1. / 255)
-    val_data_gen = ImageDataGenerator(rescale=1. / 255)
+    train_data_gen = ImageDataGenerator()
+    val_data_gen = ImageDataGenerator()
     train_generator = train_data_gen.flow(x_train, y_train, batch_size=batch_size)
     val_generator = val_data_gen.flow(x_val, y_val, batch_size=batch_size)
 
@@ -118,6 +109,7 @@ def create_train_save_model(x_train, y_train):
                                   verbose=2)
 
     # model.save(file_to_save_to) # not using this because of mcp_save
+    print(model.evaluate(x_test, y_test))
     return history
 
 
@@ -144,7 +136,7 @@ if __name__ == "__main__":
     x, y = data_operations.load_data(number_of_images_per_label)
     x_train, x_test, y_train, y_test = data_operations.create_train_and_test_sets(x, y)
 
-    model = load_model(os.path.join(dirname, 'vanilla_cnn_model_100k.h5'))
+    # model = load_model(os.path.join(dirname, 'vanilla_cnn_model_10k.h5'))
     # y_train_pred = model.predict(x_train)
     # y_train_pred = np.argmax(y_train_pred, axis=1)
     # y_test_pred = np.argmax(model.predict(x_test), axis=1)
@@ -162,18 +154,18 @@ if __name__ == "__main__":
     # print(classification_report(y_test, y_test_pred))
 
     # print(model.metrics_names)
-    print(model.evaluate(x_test, y_test))
+    # print(model.evaluate(x_test, y_test))
 
 
 
 
-    # history = create_train_save_model(x_train, y_train)
-    # # get the details form the history object
-    # train_acc = history.history['acc']
-    # val_acc = history.history['val_acc']
-    # train_loss = history.history['loss']
-    # val_loss = history.history['val_loss']
-    # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss, 'vanilla_cnn_100k')
+    history = create_train_save_model(x_train, y_train, x_test, y_test)
+    # get the details form the history object
+    train_acc = history.history['acc']
+    val_acc = history.history['val_acc']
+    train_loss = history.history['loss']
+    val_loss = history.history['val_loss']
+    data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss, '100k')
 
     # test_image = image_operations.load_images(os.path.join(dirname, '../../data/img.npy'))
 

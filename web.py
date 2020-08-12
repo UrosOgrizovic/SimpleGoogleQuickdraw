@@ -18,6 +18,7 @@ cnn_100k_model = vanilla_cnn.get_model('vanilla_cnn_model_100k.h5')
 svm_2k_model = SVM.get_model('SVM_2k.joblib')
 svm_10k_model = SVM.get_model('SVM_10k.joblib')
 vgg_10k_model = transfer_learning.get_model('VGG19_10k.h5')
+vgg_100k_model = transfer_learning.get_model('VGG19_100k.h5')
 
 @app.route('/')
 def hello():
@@ -40,6 +41,7 @@ def save_image():
         image_operations.save_as_image('data/img.npy', img_gray)
 
         loaded_image = image_operations.load_images('data/img.npy')
+        loaded_image[0] = loaded_image[0] / 255.0
 
         # image_operations.display_image(loaded_image)
         vanilla_cnn_10k_prediction, vanilla_cnn_10k_probs = vanilla_cnn.make_prediction_for_image(loaded_image,
@@ -51,13 +53,17 @@ def save_image():
 
         vgg19_10k_prediction, vgg19_10k_probs = transfer_learning.make_prediction_for_image(loaded_image,
                                                                                             vgg_10k_model)
+        vgg19_100k_prediction, vgg19_100k_probs = transfer_learning.make_prediction_for_image(loaded_image,
+                                                                                            vgg_100k_model)
         
         to_return = {'prediction': vanilla_cnn_10k_prediction, 'probabilities': vanilla_cnn_10k_probs,
                      'vanilla_cnn_100k_prediction': vanilla_cnn_100k_prediction,
                      'vanilla_cnn_100k_probabilities': vanilla_cnn_100k_probs,
                      'SVM2k_prediction': svm2k_prediction, 'SVM10k_prediction': svm10k_prediction,
                      'VGG19_10k_prediction': vgg19_10k_prediction,
-                     'VGG19_10k_probabilities': vgg19_10k_probs}
+                     'VGG19_10k_probabilities': vgg19_10k_probs,
+                     'VGG19_100k_prediction': vgg19_100k_prediction,
+                     'VGG19_100k_probabilities': vgg19_100k_probs}
         return app.response_class(response=json.dumps(to_return),
                                   status=200,
                                   mimetype='application/json')
