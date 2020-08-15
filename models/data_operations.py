@@ -77,4 +77,22 @@ def create_train_and_test_sets(x, y, is_transfer_learning=False):
 
 
 if __name__ == "__main__":
-    load_data(100)
+    x, y = load_data(100000)
+    x_tr, x_tst, y_tr, y_tst = create_train_and_test_sets(x, y)
+
+    airplane_tr = len([lbl for lbl in y_tr if np.argmax(lbl) == 0])
+    alarm_clock_tr = len([lbl for lbl in y_tr if np.argmax(lbl) == 1])
+    axe_tr = len([lbl for lbl in y_tr if np.argmax(lbl) == 2])
+    the_mona_lisa_tr = len([lbl for lbl in y_tr if np.argmax(lbl) == 3])
+    bicycle_tr = len([lbl for lbl in y_tr if np.argmax(lbl) == 4])
+    ant_tr = len([lbl for lbl in y_tr if np.argmax(lbl) == 5])
+
+    airplane_tst = len([lbl for lbl in y_tst if np.argmax(lbl) == 0])
+    alarm_clock_tst = len([lbl for lbl in y_tst if np.argmax(lbl) == 1])
+    axe_tst = len([lbl for lbl in y_tst if np.argmax(lbl) == 2])
+    the_mona_lisa_tst = len([lbl for lbl in y_tst if np.argmax(lbl) == 3])
+    bicycle_tst = len([lbl for lbl in y_tst if np.argmax(lbl) == 4])
+    ant_tst = len([lbl for lbl in y_tst if np.argmax(lbl) == 5])
+
+    print(airplane_tr, alarm_clock_tr, axe_tr, the_mona_lisa_tr, bicycle_tr, ant_tr)
+    print(airplane_tst, alarm_clock_tst, axe_tst, the_mona_lisa_tst, bicycle_tst, ant_tst)

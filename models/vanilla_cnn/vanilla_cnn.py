@@ -24,7 +24,7 @@ dirname = os.path.dirname(__file__)
 
 
 img_rows, img_cols = 28, 28
-batch_size = 32
+batch_size = 256
 number_of_images_per_label = 100000
 
 
@@ -99,7 +99,7 @@ def create_train_save_model(x_train, y_train, x_test, y_test):
     mcp_save = ModelCheckpoint(file_to_save_to, save_best_only=True, monitor='val_loss', mode='min')
     reduce_lr_loss = ReduceLROnPlateau(monitor='val_loss', factor=0.1, patience=5, verbose=1, min_delta=1e-4, mode='min')
 
-    # augmentation helps avoid overfitting
+    # fit_generator is necessary for 100k, where using batches is required due to memory size limitations
     history = model.fit_generator(train_generator,
                                   steps_per_epoch=len(x_train) // batch_size,
                                   epochs=64,
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     x, y = data_operations.load_data(number_of_images_per_label)
     x_train, x_test, y_train, y_test = data_operations.create_train_and_test_sets(x, y)
 
-    # model = load_model(os.path.join(dirname, 'vanilla_cnn_model_10k.h5'))
+    # model = load_model(os.path.join(dirname, 'vanilla_cnn_model_100k.h5'))
     # y_train_pred = model.predict(x_train)
     # y_train_pred = np.argmax(y_train_pred, axis=1)
     # y_test_pred = np.argmax(model.predict(x_test), axis=1)
