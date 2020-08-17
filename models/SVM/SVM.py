@@ -23,7 +23,7 @@ def make_prediction_for_image(image, model):
 
 
 if __name__ == "__main__":
-    x, y = data_operations.load_data(2000, False)
+    x, y = data_operations.load_data(10000, False)
 
     x = np.array(x)
     y = np.array(y)
@@ -38,22 +38,18 @@ if __name__ == "__main__":
     y_train = np.array(y_train)
     y_test = np.array(y_test)
 
-    svc = svm.SVC(gamma='scale')
+    # svc = svm.SVC(gamma='scale')
 
     # clf = svm.SVC()
-
-
 
     # parameters = {'C': [2**2, 2**3, 2**4, 2**5, 2**6]}
 
     # clf = GridSearchCV(svc, parameters, cv=10)
-    #
     # clf.fit(x_train, y_train)
-
     # print(clf.best_params_)
 
     # dump(clf, 'SVM_2k.joblib', compress=3)
-    clf = load('SVM_2k.joblib')
+    clf = load('SVM_10k.joblib')
 
 
     print(clf.score(x_train, y_train))

@@ -25,7 +25,7 @@ dirname = os.path.dirname(__file__)
 
 img_rows, img_cols = 28, 28
 batch_size = 256
-number_of_images_per_label = 100000
+number_of_images_per_label = 10000
 
 
 def define_random_tuner(num_classes, directory=Path("./"), project_name="vanilla_cnn_tuning"):
@@ -136,22 +136,24 @@ if __name__ == "__main__":
     x, y = data_operations.load_data(number_of_images_per_label)
     x_train, x_test, y_train, y_test = data_operations.create_train_and_test_sets(x, y)
 
-    # model = load_model(os.path.join(dirname, 'vanilla_cnn_model_100k.h5'))
-    # y_train_pred = model.predict(x_train)
-    # y_train_pred = np.argmax(y_train_pred, axis=1)
-    # y_test_pred = np.argmax(model.predict(x_test), axis=1)
+    model = load_model(os.path.join(dirname, 'vanilla_cnn_model_100k.h5'))
+    y_train_pred = model.predict(x_train)
+    y_train_pred = np.argmax(y_train_pred, axis=1)
+    y_test_pred = np.argmax(model.predict(x_test), axis=1)
 
 
     # # from one-hot back to digits, because that's what sklearn.metrics.f1_score requires
-    # y_train = np.argmax(y_train, axis=1)
-    # y_test = np.argmax(y_test, axis=1)
+    y_train = np.argmax(y_train, axis=1)
+    y_test = np.argmax(y_test, axis=1)
     #
-    # print('Confusion matrix:')
-    # print(confusion_matrix(y_train, y_train_pred))
-    # print('Classification report tr:')
-    # print(classification_report(y_train, y_train_pred))
-    # print('Classification report tst:')
-    # print(classification_report(y_test, y_test_pred))
+    print('Confusion matrix tr:')
+    print(confusion_matrix(y_train, y_train_pred))
+    print('Classification report tr:')
+    print(classification_report(y_train, y_train_pred))
+    print('Classification report tst:')
+    print(classification_report(y_test, y_test_pred))
+    print('Confusion matrix tst:')
+    print(confusion_matrix(y_test, y_test_pred))
 
     # print(model.metrics_names)
     # print(model.evaluate(x_test, y_test))
@@ -159,13 +161,13 @@ if __name__ == "__main__":
 
 
 
-    history = create_train_save_model(x_train, y_train, x_test, y_test)
+    # history = create_train_save_model(x_train, y_train, x_test, y_test)
     # get the details form the history object
-    train_acc = history.history['acc']
-    val_acc = history.history['val_acc']
-    train_loss = history.history['loss']
-    val_loss = history.history['val_loss']
-    data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss, '100k')
+    # train_acc = history.history['acc']
+    # val_acc = history.history['val_acc']
+    # train_loss = history.history['loss']
+    # val_loss = history.history['val_loss']
+    # data_operations.plot_training_and_validation_data(train_acc, val_acc, train_loss, val_loss, '100k')
 
     # test_image = image_operations.load_images(os.path.join(dirname, '../../data/img.npy'))
 
