@@ -122,7 +122,7 @@ This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-
       <td style="text-align:center">~96%</td>
       <td style="text-align:center">~98%</td>
       <td style="text-align:center">~89%*</td>
-      <td style="text-align:center">~missing%*</td>
+      <td style="text-align:center">~84%*</td>
       <td style="text-align:center">~94%</td>
       <td style="text-align:center">~94%</td>
     </tr>
