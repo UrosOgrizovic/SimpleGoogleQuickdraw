@@ -105,8 +105,8 @@ This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-
       <td>train</td>
       <td>~99%</td>
       <td>~97%</td>
-      <td rowspan=3>~83%*</td>
-      <td rowspan=3>~84%*</td>
+      <td rowspan=2>~99%*</td>
+      <td rowspan=2>~84%*</td>
       <td>~94%</td>
       <td>~94%</td>
     </tr>
@@ -121,13 +121,15 @@ This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-
       <td style="text-align:center">test</td>
       <td style="text-align:center">~96%</td>
       <td style="text-align:center">~98%</td>
+      <td style="text-align:center">~89%*</td>
+      <td style="text-align:center">~missing%*</td>
       <td style="text-align:center">~94%</td>
       <td style="text-align:center">~94%</td>
     </tr>
   </tbody>
 </table>
 
-\* 10-fold cross validation was done for the SVM models, so there is only one accuracy to report
+\* 10-fold cross validation was done for the SVM models, so there are only train and test accuracies
 
 # References
 [1] - [Hsu, Chih-Wei, Chih-Chung Chang, and Chih-Jen Lin. "A practical guide to support vector classification." (2003): 1396-1400.](https://www.csie.ntu.edu.tw/~cjlin/papers/guide/guide.pdf)
