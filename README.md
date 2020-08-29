@@ -1,4 +1,4 @@
-# SimpleGoogleQuickdraw
+# A Simplified Version of Google's "Quick, Draw"
 Soft Computing project, Software Engineering and Information Technologies, FTN, 2019
 
 Technologies used: Keras 2.3.1, Python 3.6.1, Tensorflow 2.0.0
