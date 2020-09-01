@@ -49,11 +49,11 @@ if __name__ == "__main__":
     # print(clf.best_params_)
 
     # dump(clf, 'SVM_2k.joblib', compress=3)
-    clf = load('SVM_10k.joblib')
+    clf = load('SVM_2k.joblib')
 
+    print(clf.best_score_)
 
-    print(clf.score(x_train, y_train))
-    print(clf.score(x_test, y_test))
+    # print(clf.score(x_test, y_test))
 
     # test_image = np.array(image_operations.load_images(os.path.join(dirname, '../../data/img.npy')))
     # # image_operations.display_image(np.squeeze(test_image))
