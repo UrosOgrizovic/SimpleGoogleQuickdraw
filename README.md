@@ -105,7 +105,7 @@ This model uses 3x3 convolution filters. Its predecessor, VGG16, achieved state-
       <td>train</td>
       <td>~99%</td>
       <td>~97%</td>
-      <td rowspan=2>~99%*</td>
+      <td rowspan=2>~89%*</td>
       <td rowspan=2>~84%*</td>
       <td>~94%</td>
       <td>~94%</td>
