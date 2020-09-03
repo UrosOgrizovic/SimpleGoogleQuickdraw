@@ -78,7 +78,9 @@ The default value of 1 was used for *C*, the penalty error term. 'rbf' was the v
 
 Training was very slow; [from docs](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html): *"The fit time scales at least quadratically with the number of samples and may be impractical beyond tens of thousands of samples."* This model doesn't work well on this problem.
 
-Perhaps the performance of this model could be improved by performing a "grid search" on *C* and *gamma* using cross-validation [1].
+A "grid search" on *C* and *gamma* was performed using cross-validation [1].
+
+Perhaps the performance of this model could be improved by using the histogram of oriented gradients (HOG). 
 
 <sup>2</sup>*C* tells the SVM optimization how much to avoid misclassifying each training example by (large *C* - small hyperplane, and vice versa), and *gamma* defines how far the influence of a single training example (i.e. point) reaches (large *gamma* - the decision boundary will only depend on the points close to it - that is, each point's influence radius will be small, and vice versa).
 
