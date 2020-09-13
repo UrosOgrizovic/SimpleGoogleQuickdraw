@@ -3,6 +3,10 @@ Soft Computing project, Software Engineering and Information Technologies, FTN, 
 
 Technologies used: Keras 2.3.1, Python 3.6.1, Tensorflow 2.0.0
 
+# Overview
+
+The goal is to predict what the user has drawn on the canvas. A subset of the „Quick, Draw!“ dataset was used, which included the following six classes: Airplane, Alarm clock, Ant, Axe, Bicycle, The Mona Lisa.
+
 # Demo
 
 <a href="https://media.giphy.com/media/Ri2xsHaPlKv2sbv4pz/giphy.gif"><img src="https://media.giphy.com/media/Ri2xsHaPlKv2sbv4pz/giphy.gif"/></a>
