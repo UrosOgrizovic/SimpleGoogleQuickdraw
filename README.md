@@ -1,5 +1,5 @@
 # A Simplified Version of Google's "Quick, Draw"
-Soft Computing project, Software Engineering and Information Technologies, Faculty of Technical Sciences, University of Novi Sad, 2019/2020
+[Soft Computing](http://www.ftn.uns.ac.rs/599836027/soft-computing) project, [Software Engineering and Information Technologies, Undegraduate Academic Studies, Faculty of Technical Sciences, University of Novi Sad](http://www.ftn.uns.ac.rs/n2094179280/software-engineering-and-information-technologies), 2019/2020
 
 Technologies used: Keras 2.3.1, Python 3.6.1, Tensorflow 2.0.0
 
